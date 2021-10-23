@@ -19,6 +19,10 @@ $ stack test
 The CLI reads input from `stdin`:
 
 ```
+$ stack exec -- bridge-cli-exe --help
+```
+
+```
 $ stack exec -- bridge-cli-exe <<< 'akxxx qtx - qjxxx'
 ♠AKxxx
 ♥QTx
