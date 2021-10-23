@@ -1,0 +1,111 @@
+name:                bridge-diagrams
+version:             0.1.0.0
+license:             BSD3
+author:              "Drew Olson"
+maintainer:          "drew@drewolson.org"
+copyright:           "2021 Drew Olson"
+
+extra-source-files:
+- README.md
+
+description:         Bridge Hand Diagrams
+
+ghc-options:
+- -Werror
+- -Wall
+- -Wcompat
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wredundant-constraints
+
+default-extensions:
+- BlockArguments
+- DataKinds
+- DeriveAnyClass
+- DeriveGeneric
+- DerivingStrategies
+- FlexibleContexts
+- FlexibleInstances
+- GeneralizedNewtypeDeriving
+- ImportQualifiedPost
+- InstanceSigs
+- LambdaCase
+- MultiParamTypeClasses
+- NamedFieldPuns
+- NoMonomorphismRestriction
+- OverloadedStrings
+- PatternSynonyms
+- QuasiQuotes
+- ScopedTypeVariables
+- TypeApplications
+- TypeFamilies
+- TypeOperators
+- ViewPatterns
+
+dependencies:
+- base >= 4.7 && < 5
+- aeson
+- bytestring
+- casing
+- discord-haskell
+- doclayout
+- either
+- http-conduit
+- megaparsec
+- network
+- raw-strings-qq
+- text
+- transformers
+- websockets
+- wuss
+
+library:
+  source-dirs: src
+
+executables:
+  bridge-cli-exe:
+    main:                Main.hs
+    source-dirs:         app/Cli
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is Cli.Main
+    dependencies:
+    - bridge-diagrams
+
+  bridge-discord-exe:
+    main:                Main.hs
+    source-dirs:         app/Discord
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is Discord.Main
+    dependencies:
+    - bridge-diagrams
+
+  bridge-slack-exe:
+    main:                Main.hs
+    source-dirs:         app/Slack
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is Slack.Main
+    dependencies:
+    - bridge-diagrams
+
+tests:
+  bridge-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - bridge-diagrams
+    - QuickCheck
+    - hspec
+    - hspec-discover
