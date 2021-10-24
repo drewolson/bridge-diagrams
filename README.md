@@ -28,6 +28,21 @@ $ stack exec -- bridge-cli-exe <<< 'akxxx qtx - qjxxx'
 ♥QTx
 ♦
 ♣QJxxx
+
+$ stack exec -- bridge-cli-exe <<< 't987 6543 - 76532; akqj akqj ak kj9; - - q8765432 aqt84; 65432 t9872 jt9 -'
+           ♠T987
+           ♥6543
+           ♦
+           ♣76532
+♠65432      -----     ♠AKQJ
+♥T9872     |  N  |    ♥AKQJ
+♦JT9       |W   E|    ♦AK
+♣          |  S  |    ♣KJ9
+            -----
+           ♠
+           ♥
+           ♦Q8765432
+           ♣AQT84
 ```
 
 The discord bot needs a `DISCORD_TOKEN`:
