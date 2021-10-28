@@ -1,4 +1,4 @@
-module Test.Bridge.Text.ParserSpec
+module Bridge.Text.FormatterSpec
   ( spec,
   )
 where
@@ -8,16 +8,21 @@ import Bridge.Data.Diagram (Diagram (..))
 import Bridge.Data.Perspective (Perspective (..))
 import Bridge.Data.Rank (Rank (..))
 import Bridge.Data.Suit (Suit (..))
-import Bridge.Text.Parser qualified as Parser
+import Bridge.Text.Formatter qualified as Formatter
+import Data.Text (Text)
+import Data.Text qualified as Text
 import Test.Hspec (Spec, describe, it, parallel, shouldBe)
+import Text.RawString.QQ (r)
+
+trimLines :: Text -> Text
+trimLines = Text.unlines . fmap Text.stripEnd . Text.lines
 
 spec :: Spec
 spec = parallel do
-  describe "Bridge.Text.Parser" do
-    describe "parse" do
-      it "parses a single hand" do
-        let result = Parser.parse "akxxx kqx txx xx"
-        let expected =
+  describe "format" do
+    it "formats a single hand" do
+      let result =
+            Formatter.format
               SingleHand
                 { hand =
                     [ Card Spades Ace,
@@ -36,41 +41,18 @@ spec = parallel do
                     ]
                 }
 
-        result `shouldBe` Right expected
+      let expected =
+            [r|
+♠AKxxx
+♥KQx
+♦Txx
+♣xx|]
 
-      it "parses partial hands with empty suits" do
-        let result = Parser.parse "akxxx - - -"
-        let expected =
-              SingleHand
-                { hand =
-                    [ Card Spades Ace,
-                      Card Spades King,
-                      Card Spades Unknown,
-                      Card Spades Unknown,
-                      Card Spades Unknown
-                    ]
-                }
+      result `shouldBe` Text.drop 1 expected
 
-        result `shouldBe` Right expected
-
-      it "parses empty suits with void or Void" do
-        let result = Parser.parse "akxxx void Void -"
-        let expected =
-              SingleHand
-                { hand =
-                    [ Card Spades Ace,
-                      Card Spades King,
-                      Card Spades Unknown,
-                      Card Spades Unknown,
-                      Card Spades Unknown
-                    ]
-                }
-
-        result `shouldBe` Right expected
-
-      it "parses a double dummy hand" do
-        let result = Parser.parse "akxxx qxx jtx xx; qxx akxxx xxx kx; jx jx akxxx qxxx; xxx xxx qx axxxx"
-        let expected =
+    it "formats a double-dummy hand" do
+      let result =
+            Formatter.format
               DoubleDummy
                 { north =
                     [ Card Spades Ace,
@@ -134,11 +116,28 @@ spec = parallel do
                     ]
                 }
 
-        result `shouldBe` Right expected
+      let expected =
+            [r|
+           ♠AKxxx
+           ♥Qxx
+           ♦JTx
+           ♣xx
+♠xxx        -----     ♠Qxx
+♥xxx       |  N  |    ♥AKxxx
+♦Qx        |W   E|    ♦xxx
+♣Axxxx     |  S  |    ♣Kx
+            -----
+           ♠Jx
+           ♥Jx
+           ♦AKxxx
+           ♣Qxxx
+|]
 
-      it "parses a single dummy hand" do
-        let result = Parser.parse "akxxx qxx jtx xx; jx jx akxxx qxxx"
-        let expected =
+      trimLines result `shouldBe` Text.drop 1 expected
+
+    it "formats a single-dummy hand" do
+      let result =
+            Formatter.format
               SingleDummy
                 { north =
                     [ Card Spades Ace,
@@ -172,14 +171,27 @@ spec = parallel do
                     ]
                 }
 
-        result `shouldBe` Right expected
+      let expected =
+            [r|
+♠AKxxx
+♥Qxx
+♦JTx
+♣xx
 
-      it "parses a defensive hand from the west perspective" do
-        let result = Parser.parse "akxxx qxx jtx xx < jx jx akxxx qxxx"
-        let expected =
+♠Jx
+♥Jx
+♦AKxxx
+♣Qxxx
+|]
+
+      trimLines result `shouldBe` Text.drop 1 expected
+
+    it "formats a defensive hand from the west perspective" do
+      let result =
+            Formatter.format
               Defense
                 { perspective = West,
-                  defender =
+                  dummy =
                     [ Card Spades Ace,
                       Card Spades King,
                       Card Spades Unknown,
@@ -194,28 +206,41 @@ spec = parallel do
                       Card Clubs Unknown,
                       Card Clubs Unknown
                     ],
-                  dummy =
-                    [ Card Spades Jack,
+                  defender =
+                    [ Card Spades Unknown,
                       Card Spades Unknown,
-                      Card Hearts Jack,
+                      Card Spades Unknown,
                       Card Hearts Unknown,
-                      Card Diamonds Ace,
-                      Card Diamonds King,
+                      Card Hearts Unknown,
+                      Card Hearts Unknown,
+                      Card Diamonds Queen,
                       Card Diamonds Unknown,
-                      Card Diamonds Unknown,
-                      Card Diamonds Unknown,
-                      Card Clubs Queen,
+                      Card Clubs Ace,
+                      Card Clubs Unknown,
                       Card Clubs Unknown,
                       Card Clubs Unknown,
                       Card Clubs Unknown
                     ]
                 }
 
-        result `shouldBe` Right expected
+      let expected =
+            [r|
+           ♠AKxxx
+           ♥Qxx
+           ♦JTx
+           ♣xx
+♠xxx        -----
+♥xxx       |  N  |
+♦Qx        |W    |
+♣Axxxx     |     |
+            -----
+|]
 
-      it "parses a defensive hand from the east perspective" do
-        let result = Parser.parse "akxxx qxx jtx xx > jx jx akxxx qxxx"
-        let expected =
+      trimLines result `shouldBe` Text.drop 1 expected
+
+    it "formats a defensive hand from the east perspective" do
+      let result =
+            Formatter.format
               Defense
                 { perspective = East,
                   dummy =
@@ -234,20 +259,33 @@ spec = parallel do
                       Card Clubs Unknown
                     ],
                   defender =
-                    [ Card Spades Jack,
+                    [ Card Spades Queen,
                       Card Spades Unknown,
-                      Card Hearts Jack,
+                      Card Spades Unknown,
+                      Card Hearts Ace,
+                      Card Hearts King,
                       Card Hearts Unknown,
-                      Card Diamonds Ace,
-                      Card Diamonds King,
+                      Card Hearts Unknown,
+                      Card Hearts Unknown,
                       Card Diamonds Unknown,
                       Card Diamonds Unknown,
                       Card Diamonds Unknown,
-                      Card Clubs Queen,
-                      Card Clubs Unknown,
-                      Card Clubs Unknown,
+                      Card Clubs King,
                       Card Clubs Unknown
                     ]
                 }
 
-        result `shouldBe` Right expected
+      let expected =
+            [r|
+♠AKxxx
+♥Qxx
+♦JTx
+♣xx
+ -----     ♠Qxx
+|  N  |    ♥AKxxx
+|    E|    ♦xxx
+|     |    ♣Kx
+ -----
+|]
+
+      trimLines result `shouldBe` Text.drop 1 expected
