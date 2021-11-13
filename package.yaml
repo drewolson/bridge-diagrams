@@ -70,7 +70,6 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
-    - -main-is Cli.Main
     dependencies:
     - bridge-diagrams
 
@@ -81,7 +80,6 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
-    - -main-is Discord.Main
     dependencies:
     - bridge-diagrams
 
@@ -92,7 +90,6 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
-    - -main-is Slack.Main
     dependencies:
     - bridge-diagrams
 

@@ -1,4 +1,4 @@
-module Discord.Main where
+module Main where
 
 import Bridge.Discord.Main qualified
 

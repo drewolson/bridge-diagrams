@@ -106,7 +106,7 @@ executable bridge-cli-exe
       TypeFamilies
       TypeOperators
       ViewPatterns
-  ghc-options: -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Cli.Main
+  ghc-options: -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -155,7 +155,7 @@ executable bridge-discord-exe
       TypeFamilies
       TypeOperators
       ViewPatterns
-  ghc-options: -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Discord.Main
+  ghc-options: -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -204,7 +204,7 @@ executable bridge-slack-exe
       TypeFamilies
       TypeOperators
       ViewPatterns
-  ghc-options: -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Slack.Main
+  ghc-options: -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , base >=4.7 && <5
