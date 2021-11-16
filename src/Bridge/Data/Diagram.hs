@@ -3,12 +3,15 @@ module Bridge.Data.Diagram
   )
 where
 
-import Bridge.Data.Hand (Hand)
-import Bridge.Data.Perspective (Perspective)
+import Bridge.Data.Card (Card)
+import Bridge.Data.Layout (Layout)
+import Bridge.Data.Scoring (Scoring)
+import Bridge.Data.Vul (Vul)
 
-data Diagram
-  = SingleHand {hand :: Hand}
-  | SingleDummy {north :: Hand, south :: Hand}
-  | DoubleDummy {north :: Hand, east :: Hand, south :: Hand, west :: Hand}
-  | Defense {perspective :: Perspective, defender :: Hand, dummy :: Hand}
-  deriving (Eq, Ord, Show)
+data Diagram = Diagram
+  { layout :: Layout,
+    vul :: Maybe Vul,
+    scoring :: Maybe Scoring,
+    lead :: Maybe Card
+  }
+  deriving (Eq, Show)

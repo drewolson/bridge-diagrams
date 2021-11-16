@@ -22,9 +22,12 @@ library
       Bridge.Data.Card
       Bridge.Data.Diagram
       Bridge.Data.Hand
+      Bridge.Data.Layout
       Bridge.Data.Perspective
       Bridge.Data.Rank
+      Bridge.Data.Scoring
       Bridge.Data.Suit
+      Bridge.Data.Vul
       Bridge.Discord.Main
       Bridge.IO.Buffering
       Bridge.Slack.Main
@@ -70,6 +73,7 @@ library
     , http-conduit
     , megaparsec
     , network
+    , parser-combinators
     , raw-strings-qq
     , text
     , transformers
@@ -119,6 +123,7 @@ executable bridge-cli-exe
     , http-conduit
     , megaparsec
     , network
+    , parser-combinators
     , raw-strings-qq
     , text
     , transformers
@@ -168,6 +173,7 @@ executable bridge-discord-exe
     , http-conduit
     , megaparsec
     , network
+    , parser-combinators
     , raw-strings-qq
     , text
     , transformers
@@ -217,6 +223,7 @@ executable bridge-slack-exe
     , http-conduit
     , megaparsec
     , network
+    , parser-combinators
     , raw-strings-qq
     , text
     , transformers
@@ -272,6 +279,7 @@ test-suite bridge-test
     , http-conduit
     , megaparsec
     , network
+    , parser-combinators
     , raw-strings-qq
     , text
     , transformers

@@ -29,9 +29,9 @@ $ stack exec -- bridge-cli-exe <<< 'akxxx qtx - qjxxx'
 ♦
 ♣QJxxx
 
-$ stack exec -- bridge-cli-exe <<< 't987 6543 - 76532; akqj akqj ak kj9; - - q8765432 aqt84; 65432 t9872 jt9 -'
-           ♠T987
-           ♥6543
+$ stack exec -- bridge-cli-exe <<< 't987 6543 - 76532; akqj akqj ak kj9; - - q8765432 aqt84; 65432 t9872 jt9 -, r/r, imps'
+Vul: R/R   ♠T987
+IMPs       ♥6543
            ♦
            ♣76532
 ♠65432      -----     ♠AKQJ

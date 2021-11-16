@@ -5,11 +5,15 @@ module Bridge.Text.Formatter
   )
 where
 
+import Bridge.Data.Card (Card)
 import Bridge.Data.Card qualified as Card
 import Bridge.Data.Diagram (Diagram (..))
 import Bridge.Data.Hand (Hand)
+import Bridge.Data.Layout (Layout (..))
 import Bridge.Data.Perspective (Perspective (..))
+import Bridge.Data.Scoring (Scoring (..))
 import Bridge.Data.Suit (Suit (..))
+import Bridge.Data.Vul (Vul (..))
 import Data.List (sort)
 import Data.Text (Text, pack)
 import Text.DocLayout (Doc, chomp, empty, lblock, literal, render, vcat, vsep)
@@ -66,30 +70,66 @@ handBlock = block . vcat . fmap literal . handLines
           holding = foldMap (pack . show) $ sort suitRanks
        in pack (show suit) <> holding
 
+vulLine :: Maybe Vul -> Doc Text
+vulLine = \case
+  Nothing -> literal "Vul: N/A"
+  Just vul -> literal $ "Vul: " <> pack (show vul)
+
+scoringLine :: Maybe Scoring -> Doc Text
+scoringLine = \case
+  Nothing -> empty
+  Just scoring -> literal $ pack $ show scoring
+
+infoBlock :: Maybe Vul -> Maybe Scoring -> Doc Text
+infoBlock Nothing Nothing = emptyBlock
+infoBlock vul scoring =
+  block $
+    vcat
+      [ vulLine vul,
+        scoringLine scoring
+      ]
+
+leadBlock :: Maybe Card -> Doc Text
+leadBlock = \case
+  Just card -> block $ literal $ pack $ show card
+  Nothing -> empty
+
 diagramDocument :: Diagram -> Doc Text
 diagramDocument = \case
-  DoubleDummy {north, south, east, west} ->
+  Diagram {layout = DoubleDummy {north, south, east, west}, vul, scoring} ->
     vcat
-      [ emptyBlock <> handBlock north,
+      [ infoBlock vul scoring <> handBlock north,
         handBlock west <> centerCompass <> handBlock east,
         emptyBlock <> handBlock south
       ]
-  SingleDummy {north, south} ->
+  Diagram {layout = SingleDummy {north, south}, vul, scoring, lead = Nothing} ->
     vsep
-      [ handBlock north,
+      [ handBlock north <> infoBlock vul scoring,
         handBlock south
       ]
-  Defense {perspective = East, defender, dummy} ->
+  Diagram {layout = SingleDummy {north, south}, vul, scoring, lead} ->
     vcat
-      [ handBlock dummy,
+      [ infoBlock vul scoring <> handBlock north,
+        leadBlock lead,
+        emptyBlock <> handBlock south
+      ]
+  Diagram {layout = Defense {perspective = East, defender, dummy}, vul, scoring, lead = Nothing} ->
+    vcat
+      [ handBlock dummy <> infoBlock vul scoring,
         lowerLeftCompass <> handBlock defender
       ]
-  Defense {perspective = West, defender, dummy} ->
+  Diagram {layout = Defense {perspective = East, defender, dummy}, vul, scoring, lead} ->
     vcat
-      [ emptyBlock <> handBlock dummy,
+      [ infoBlock vul scoring <> handBlock dummy,
+        leadBlock lead <> lowerLeftCompass <> handBlock defender
+      ]
+  Diagram {layout = Defense {perspective = West, defender, dummy}, vul, scoring} ->
+    vcat
+      [ infoBlock vul scoring <> handBlock dummy,
         handBlock defender <> lowerRightCompass
       ]
-  SingleHand {hand} -> handBlock hand
+  Diagram {layout = SingleHand {hand}, vul, scoring} ->
+    handBlock hand <> infoBlock vul scoring
 
 format :: Diagram -> Text
 format = render Nothing . chomp . diagramDocument
@@ -111,9 +151,15 @@ akxxx qtx jxx xx
 akqxxxxx - - kjxxx
 AKQxxxxx Void void KJxxx
 
+You can also optionally provide a vulnerability, opening lead, and scoring
+separated by commas.
+
+Examples:
+
+akxxx qxx jtx xx; jx jx akxxx qxxx, r/r, d4, imps
 
 
-Several types of diagrams are supported.
+Several types of layouts are supported.
 
 
 
@@ -141,6 +187,22 @@ akxxx qxx jtx xx; jx jx akxxx qxxx
 ♥Jx
 ♦AKxxx
 ♣Qxxx
+
+Or with an opening lead, vul, and scoring:
+
+akxxx qxx jtx xx; jx jx akxxx qxxx, d4, r/r, imps
+
+Vul: R/R   ♠AKxxx
+IMPs       ♥Qxx
+           ♦JTx
+           ♣xx
+
+♦4
+
+           ♠Jx
+           ♥Jx
+           ♦AKxxx
+           ♣Qxxx
 
 
 

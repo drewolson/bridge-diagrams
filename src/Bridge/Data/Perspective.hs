@@ -4,4 +4,4 @@ module Bridge.Data.Perspective
 where
 
 data Perspective = East | West
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)

@@ -6,14 +6,18 @@ where
 import Bridge.Data.Card (Card (..))
 import Bridge.Data.Diagram (Diagram (..))
 import Bridge.Data.Hand (Hand)
+import Bridge.Data.Layout (Layout (..))
 import Bridge.Data.Perspective (Perspective (..))
 import Bridge.Data.Rank (Rank (..))
+import Bridge.Data.Scoring (Scoring (..))
 import Bridge.Data.Suit (Suit (..))
+import Bridge.Data.Vul (Vul (..))
 import Control.Applicative ((<|>))
+import Control.Applicative.Permutations (intercalateEffect, toPermutation, toPermutationWithDefault)
 import Control.Monad (join, unless, when)
 import Data.Bifunctor (first)
 import Data.List (nub)
-import Data.Text (Text, pack)
+import Data.Text (Text, pack, strip)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, choice, errorBundlePretty, runParser, sepBy1, sepEndBy1, some, try, (<?>))
 import Text.Megaparsec.Char (char, space, space1, string)
@@ -69,9 +73,12 @@ parseHand = do
 
   pure hand
 
-parseDeclarer :: Parser Diagram
+parseHands :: Parser [Hand]
+parseHands = sepBy1 parseHand (space *> char ';' <* space)
+
+parseDeclarer :: Parser Layout
 parseDeclarer = do
-  hands <- sepBy1 parseHand (space *> char ';' <* space)
+  hands <- parseHands
 
   unless (uniqueCards $ join hands) do
     fail "Cards in deal must be unique"
@@ -85,7 +92,7 @@ parseDeclarer = do
 parsePerspective :: Parser Perspective
 parsePerspective = (West <$ char '<') <|> (East <$ char '>')
 
-parseDefense :: Parser Diagram
+parseDefense :: Parser Layout
 parseDefense = do
   a <- parseHand <* space
   seat <- parsePerspective <* space
@@ -95,8 +102,56 @@ parseDefense = do
     East -> Defense {perspective = East, defender = b, dummy = a}
     West -> Defense {perspective = West, defender = a, dummy = b}
 
+parseLayout :: Parser Layout
+parseLayout = try parseDefense <|> parseDeclarer
+
+parseVul :: Parser Vul
+parseVul =
+  choice
+    [ RR <$ vul <* char '/' <* vul,
+      WR <$ nonVul <* char '/' <* vul,
+      RW <$ vul <* char '/' <* nonVul,
+      WW <$ nonVul <* char '/' <* nonVul
+    ]
+  where
+    nonVul = char 'w' <|> char 'W'
+    vul = char 'r' <|> char 'R'
+
+parseSuit :: Parser Suit
+parseSuit =
+  choice
+    [ Spades <$ spades,
+      Hearts <$ hearts,
+      Diamonds <$ diamonds,
+      Clubs <$ clubs
+    ]
+  where
+    spades = char 's' <|> char 'S'
+    hearts = char 'h' <|> char 'H'
+    diamonds = char 'd' <|> char 'D'
+    clubs = char 'c' <|> char 'C'
+
+parseCard :: Parser Card
+parseCard = Card <$> parseSuit <*> parseRank
+
+parseScoring :: Parser Scoring
+parseScoring =
+  choice
+    [ Imps <$ (string "imps" <|> string "IMPs" <|> string "IMPS"),
+      Mps <$ (string "mps" <|> string "MPs" <> string "MPS"),
+      Bam <$ (string "bam" <|> string "BAM")
+    ]
+
 parseDiagram :: Parser Diagram
-parseDiagram = try parseDefense <|> parseDeclarer
+parseDiagram = do
+  (layout, lead, vul, scoring) <-
+    intercalateEffect (space *> char ',' <* space) $
+      (,,,) <$> toPermutation parseLayout
+        <*> toPermutationWithDefault Nothing (Just <$> parseCard)
+        <*> toPermutationWithDefault Nothing (Just <$> parseVul)
+        <*> toPermutationWithDefault Nothing (Just <$> parseScoring)
+
+  pure $ Diagram {layout, vul, lead, scoring}
 
 parse :: Text -> Either Text Diagram
-parse = first (pack . errorBundlePretty) . runParser parseDiagram ""
+parse = first (pack . errorBundlePretty) . runParser parseDiagram "" . strip

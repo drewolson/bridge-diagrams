@@ -53,6 +53,7 @@ dependencies:
 - http-conduit
 - megaparsec
 - network
+- parser-combinators
 - raw-strings-qq
 - text
 - transformers
