@@ -12,7 +12,9 @@ import Bridge.Data.Scoring (Scoring (Imps))
 import Bridge.Data.Suit (Suit (..))
 import Bridge.Data.Vul (Vul (..))
 import Bridge.Text.Parser qualified as Parser
-import Test.Hspec (Spec, describe, it, parallel, shouldBe)
+import Data.Either qualified as Either
+import Data.Text qualified as Text
+import Test.Hspec (Spec, describe, it, parallel, shouldBe, shouldSatisfy)
 
 spec :: Spec
 spec = parallel do
@@ -249,6 +251,16 @@ spec = parallel do
               }
 
       result `shouldBe` Right expected
+
+    it "does not allow non-unique opening leads" do
+      let err = Either.fromLeft "boom" $ Parser.parse "akxxx qxx jtx xx; jx jx akxxx qxxx, sa"
+
+      err `shouldSatisfy` Text.isInfixOf "Opening lead present in another hand"
+
+    it "does not allow unknown spots as opening leads" do
+      let err = Either.fromLeft "boom" $ Parser.parse "akxxx qxx jtx xx; jx jx akxxx qxxx, sx"
+
+      err `shouldSatisfy` Text.isInfixOf "Opening lead cannot be an unknown spot card"
 
     it "parses a defensive hand from the west perspective" do
       let result = Parser.parse "akxxx qxx jtx xx < jx jx akxxx qxxx"

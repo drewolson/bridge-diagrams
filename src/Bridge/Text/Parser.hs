@@ -27,6 +27,30 @@ type Parser = Parsec Void Text
 knownCards :: [Card] -> [Card]
 knownCards = filter ((/= Unknown) . rank)
 
+isUnknownCard :: Maybe Card -> Bool
+isUnknownCard = \case
+  Just Card {rank = Unknown} -> True
+  _ -> False
+
+isValidLead :: Layout -> Maybe Card -> Bool
+isValidLead _ Nothing = True
+isValidLead SingleHand {} _ = True
+isValidLead Defense {perspective = West} _ = True
+isValidLead Defense {perspective = East, defender, dummy} (Just lead) =
+  lead `notElem` knownCards (defender ++ dummy)
+isValidLead SingleDummy {north, south} (Just lead) =
+  lead `notElem` knownCards (north ++ south)
+isValidLead DoubleDummy {west} (Just lead) =
+  lead `elem` knownCards west
+
+validateLead :: Layout -> Maybe Card -> Parser ()
+validateLead layout lead = do
+  unless (isValidLead layout lead) do
+    fail "Opening lead present in another hand"
+
+  when (isUnknownCard lead) do
+    fail "Opening lead cannot be an unknown spot card"
+
 uniqueCards :: [Card] -> Bool
 uniqueCards cards =
   let known = knownCards cards
@@ -145,6 +169,8 @@ parseDiagram = do
         <*> toPermutationWithDefault Nothing (Just <$> parseVul)
         <*> toPermutationWithDefault Nothing (Just <$> parseScoring)
         <*> toPermutationWithDefault Nothing (Just <$> parseCard)
+
+  validateLead layout lead
 
   pure $ Diagram {layout, vul, scoring, lead}
 
