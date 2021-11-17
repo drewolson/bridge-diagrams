@@ -196,9 +196,7 @@ Vul: R/R   ♠AKxxx
 IMPs       ♥Qxx
            ♦JTx
            ♣xx
-
-♦4
-
+Lead: ♦4
            ♠Jx
            ♥Jx
            ♦AKxxx
