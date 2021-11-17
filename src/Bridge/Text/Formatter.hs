@@ -91,16 +91,16 @@ infoBlock vul scoring =
 
 leadBlock :: Maybe Card -> Doc Text
 leadBlock = \case
-  Just card -> block $ literal $ pack $ show card
-  Nothing -> empty
+  Just card -> block $ literal $ "Lead: " <> pack (show card)
+  Nothing -> emptyBlock
 
 diagramDocument :: Diagram -> Doc Text
 diagramDocument = \case
-  Diagram {layout = DoubleDummy {north, south, east, west}, vul, scoring} ->
+  Diagram {layout = DoubleDummy {north, south, east, west}, vul, scoring, lead} ->
     vcat
       [ infoBlock vul scoring <> handBlock north,
         handBlock west <> centerCompass <> handBlock east,
-        emptyBlock <> handBlock south
+        leadBlock lead <> handBlock south
       ]
   Diagram {layout = SingleDummy {north, south}, vul, scoring, lead = Nothing} ->
     vsep

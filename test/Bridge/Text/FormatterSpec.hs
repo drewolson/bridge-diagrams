@@ -151,7 +151,7 @@ spec = parallel do
 
       trimLines result `shouldBe` Text.drop 1 expected
 
-    it "formats a double-dummy hand with vul" do
+    it "formats a double-dummy hand with vul, scoring, and opening lead" do
       let result =
             Formatter.format
               Diagram
@@ -219,14 +219,14 @@ spec = parallel do
                           ]
                       },
                   vul = Just RR,
-                  lead = Nothing,
-                  scoring = Nothing
+                  lead = Just $ Card Clubs Ten,
+                  scoring = Just Imps
                 }
 
       let expected =
             [r|
 Vul: R/R   ♠AKxxx
-           ♥Qxx
+IMPs       ♥Qxx
            ♦JTx
            ♣xx
 ♠xxx        -----     ♠Qxx
@@ -234,7 +234,7 @@ Vul: R/R   ♠AKxxx
 ♦Qx        |W   E|    ♦xxx
 ♣Axxxx     |  S  |    ♣Kx
             -----
-           ♠Jx
+Lead: ♣T   ♠Jx
            ♥Jx
            ♦AKxxx
            ♣Qxxx
@@ -347,7 +347,7 @@ Vul: R/R   ♠AKxxx
            ♥Qxx
            ♦JTx
            ♣xx
-♦4
+Lead: ♦4
            ♠Jx
            ♥Jx
            ♦AKxxx
@@ -579,7 +579,7 @@ Vul: R/R   ♠AKxxx
            ♥Qxx
            ♦JTx
            ♣xx
-♦4          -----     ♠Qxx
+Lead: ♦4    -----     ♠Qxx
            |  N  |    ♥AKxxx
            |    E|    ♦xxx
            |     |    ♣Kx
@@ -637,7 +637,7 @@ Vul: R/R   ♠AKxxx
 IMPs       ♥Qxx
            ♦JTx
            ♣xx
-♦4          -----     ♠Qxx
+Lead: ♦4    -----     ♠Qxx
            |  N  |    ♥AKxxx
            |    E|    ♦xxx
            |     |    ♣Kx

@@ -120,16 +120,11 @@ parseVul =
 parseSuit :: Parser Suit
 parseSuit =
   choice
-    [ Spades <$ spades,
-      Hearts <$ hearts,
-      Diamonds <$ diamonds,
-      Clubs <$ clubs
+    [ Spades <$ (char 's' <|> char 'S'),
+      Hearts <$ (char 'h' <|> char 'H'),
+      Diamonds <$ (char 'd' <|> char 'D'),
+      Clubs <$ (char 'c' <|> char 'C')
     ]
-  where
-    spades = char 's' <|> char 'S'
-    hearts = char 'h' <|> char 'H'
-    diamonds = char 'd' <|> char 'D'
-    clubs = char 'c' <|> char 'C'
 
 parseCard :: Parser Card
 parseCard = Card <$> parseSuit <*> parseRank
@@ -144,14 +139,14 @@ parseScoring =
 
 parseDiagram :: Parser Diagram
 parseDiagram = do
-  (layout, lead, vul, scoring) <-
+  (layout, vul, scoring, lead) <-
     intercalateEffect (space *> char ',' <* space) $
       (,,,) <$> toPermutation parseLayout
-        <*> toPermutationWithDefault Nothing (Just <$> parseCard)
         <*> toPermutationWithDefault Nothing (Just <$> parseVul)
         <*> toPermutationWithDefault Nothing (Just <$> parseScoring)
+        <*> toPermutationWithDefault Nothing (Just <$> parseCard)
 
-  pure $ Diagram {layout, vul, lead, scoring}
+  pure $ Diagram {layout, vul, scoring, lead}
 
 parse :: Text -> Either Text Diagram
 parse = first (pack . errorBundlePretty) . runParser parseDiagram "" . strip
