@@ -5,8 +5,7 @@ packages:
 - .
 
 extra-deps:
-- git: https://github.com/drewolson/discord-haskell.git
-  commit: 9ebd4e8ddac3a4df236bf5fa20ca590384ce56ba
+- discord-haskell-1.9.2
 - emoji-0.1.0.2
 
 allow-different-user: true

@@ -5,16 +5,12 @@
 
 packages:
 - completed:
-    name: discord-haskell
-    version: 1.9.1
-    git: https://github.com/drewolson/discord-haskell.git
+    hackage: discord-haskell-1.9.2@sha256:49b8a4caca243a85ca357917604c9487dd1c7ebf4fbd721b22ae5b4541fe06e6,3630
     pantry-tree:
-      size: 2558
-      sha256: 813e11886d6c1a96f18693f5d0ae5f0d4861bcc2e9efecb89a563a60bbb50428
-    commit: 9ebd4e8ddac3a4df236bf5fa20ca590384ce56ba
+      size: 2108
+      sha256: b766cb866b46143ed7b4c9f7a7aab3450595be3cf797273fdc7cb1665e53903d
   original:
-    git: https://github.com/drewolson/discord-haskell.git
-    commit: 9ebd4e8ddac3a4df236bf5fa20ca590384ce56ba
+    hackage: discord-haskell-1.9.2
 - completed:
     hackage: emoji-0.1.0.2@sha256:d995572a5c7dcd28f98eb15c6e387a7b3bda1ac2477ab0d9dba8580d5d7b161f,1273
     pantry-tree:
