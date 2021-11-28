@@ -39,11 +39,11 @@ pattern BridgeCommand a <- (stripPrefix "!bridge" . strip . messageText -> Just 
 
 deleteMessage :: Message -> DiscordHandler ()
 deleteMessage m =
-  void $ restCall (DeleteMessage (messageChannel m, messageId m))
+  void $ restCall $ DeleteMessage (messageChannel m, messageId m)
 
 withDm :: Message -> (Channel -> DiscordHandler ()) -> DiscordHandler ()
 withDm m cb = do
-  result <- restCall (CreateDM (userId $ messageAuthor m))
+  result <- restCall $ CreateDM (userId $ messageAuthor m)
 
   case result of
     Left _ -> pure ()

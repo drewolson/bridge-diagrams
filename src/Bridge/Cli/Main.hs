@@ -24,7 +24,7 @@ parseHand = do
   input <- Text.IO.getContents
 
   case Parser.parse input of
-    Left e -> do
+    Left e ->
       Text.IO.putStrLn $ "Error: " <> e
     Right deal ->
       Text.IO.putStrLn $ Formatter.format deal

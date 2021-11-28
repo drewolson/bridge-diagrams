@@ -20,7 +20,7 @@ import Data.List (nub)
 import Data.Text (Text, pack, strip)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, choice, errorBundlePretty, runParser, sepBy1, sepEndBy1, some, try, (<?>))
-import Text.Megaparsec.Char (char, space, space1, string)
+import Text.Megaparsec.Char (char, space, space1, string, string')
 
 type Parser = Parsec Void Text
 
@@ -58,11 +58,11 @@ uniqueCards cards =
 
 parseRank :: Parser Rank
 parseRank =
-  (Ace <$ choice [char 'A', char 'a'])
-    <|> (King <$ choice [char 'K', char 'k'])
-    <|> (Queen <$ choice [char 'Q', char 'q'])
-    <|> (Jack <$ choice [char 'J', char 'j'])
-    <|> (Ten <$ choice [try $ string "T", try $ string "t", try $ string "10"])
+  (Ace <$ string' "a")
+    <|> (King <$ string' "k")
+    <|> (Queen <$ string' "q")
+    <|> (Jack <$ string' "j")
+    <|> (Ten <$ choice [string' "t", string "10"])
     <|> (Nine <$ char '9')
     <|> (Eight <$ char '8')
     <|> (Seven <$ char '7')
@@ -71,11 +71,11 @@ parseRank =
     <|> (Four <$ char '4')
     <|> (Three <$ char '3')
     <|> (Two <$ char '2')
-    <|> (Unknown <$ choice [char 'x', char 'X'])
+    <|> (Unknown <$ string' "x")
     <?> "Valid Card"
 
 parseVoidSuit :: Parser [Rank]
-parseVoidSuit = [] <$ (string "-" <|> string "void" <|> string "Void")
+parseVoidSuit = [] <$ (string "-" <|> string' "void")
 
 parseSuitHolding :: Parser [Rank]
 parseSuitHolding = try parseVoidSuit <|> some parseRank
@@ -138,16 +138,16 @@ parseVul =
       WW <$ nonVul <* char '/' <* nonVul
     ]
   where
-    nonVul = char 'w' <|> char 'W'
-    vul = char 'r' <|> char 'R'
+    nonVul = string' "w"
+    vul = string' "r"
 
 parseSuit :: Parser Suit
 parseSuit =
   choice
-    [ Spades <$ (char 's' <|> char 'S'),
-      Hearts <$ (char 'h' <|> char 'H'),
-      Diamonds <$ (char 'd' <|> char 'D'),
-      Clubs <$ (char 'c' <|> char 'C')
+    [ Spades <$ string' "s",
+      Hearts <$ string' "h",
+      Diamonds <$ string' "d",
+      Clubs <$ string' "c"
     ]
 
 parseCard :: Parser Card
@@ -156,9 +156,9 @@ parseCard = Card <$> parseSuit <*> parseRank
 parseScoring :: Parser Scoring
 parseScoring =
   choice
-    [ Imps <$ (string "imps" <|> string "IMPs" <|> string "IMPS"),
-      Mps <$ (string "mps" <|> string "MPs" <> string "MPS"),
-      Bam <$ (string "bam" <|> string "BAM")
+    [ Imps <$ string' "imps",
+      Mps <$ string' "mps",
+      Bam <$ string' "bam"
     ]
 
 parseDiagram :: Parser Diagram
