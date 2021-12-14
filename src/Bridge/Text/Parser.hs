@@ -132,9 +132,9 @@ parseLayout = try parseDefense <|> parseDeclarer
 parseVul :: Parser Vul
 parseVul =
   choice
-    [ RR <$ vul <* char '/' <* vul,
-      WR <$ nonVul <* char '/' <* vul,
-      RW <$ vul <* char '/' <* nonVul,
+    [ RR <$ try (vul <* char '/' <* vul),
+      WR <$ try (nonVul <* char '/' <* vul),
+      RW <$ try (vul <* char '/' <* nonVul),
       WW <$ nonVul <* char '/' <* nonVul
     ]
   where

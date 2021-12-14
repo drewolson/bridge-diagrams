@@ -209,7 +209,7 @@ spec = parallel do
       result `shouldBe` Right expected
 
     it "parses a single dummy hand with vul, opening lead, and scoring" do
-      let result = Parser.parse "akxxx qxx jtx xx; jx jx akxxx qxxx, d4, r/r, imps"
+      let result = Parser.parse "akxxx qxx jtx xx; jx jx akxxx qxxx, d4, r/w, imps"
       let expected =
             Diagram
               { layout =
@@ -245,7 +245,7 @@ spec = parallel do
                           Card Clubs Unknown
                         ]
                     },
-                vul = Just RR,
+                vul = Just RW,
                 lead = Just (Card Diamonds Four),
                 scoring = Just Imps
               }
