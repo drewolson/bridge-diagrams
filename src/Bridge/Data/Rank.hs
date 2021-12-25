@@ -1,6 +1,8 @@
 module Bridge.Data.Rank
   ( Rank (..),
     isUnknown,
+    enumerate,
+    honors,
   )
 where
 
@@ -19,7 +21,7 @@ data Rank
   | Three
   | Two
   | Unknown
-  deriving (Eq, Ord)
+  deriving (Eq, Ord, Bounded, Enum)
 
 instance Show Rank where
   show :: Rank -> String
@@ -41,3 +43,9 @@ instance Show Rank where
 
 isUnknown :: Rank -> Bool
 isUnknown = (== Unknown)
+
+enumerate :: [Rank]
+enumerate = [Ace .. Two]
+
+honors :: [Rank]
+honors = [Ace .. Ten]

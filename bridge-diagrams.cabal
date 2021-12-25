@@ -235,6 +235,7 @@ test-suite bridge-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Bridge.Data.CardSpec
       Bridge.Text.FormatterSpec
       Bridge.Text.ParserSpec
       Paths_bridge_diagrams

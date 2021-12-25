@@ -1,5 +1,6 @@
 module Bridge.Data.Suit
   ( Suit (..),
+    enumerate,
   )
 where
 
@@ -8,7 +9,7 @@ data Suit
   | Hearts
   | Diamonds
   | Clubs
-  deriving (Eq, Ord)
+  deriving (Eq, Ord, Bounded, Enum)
 
 instance Show Suit where
   show :: Suit -> String
@@ -17,3 +18,6 @@ instance Show Suit where
     Hearts -> "♥"
     Diamonds -> "♦"
     Clubs -> "♣"
+
+enumerate :: [Suit]
+enumerate = [minBound .. maxBound]
