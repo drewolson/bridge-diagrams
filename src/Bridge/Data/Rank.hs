@@ -1,5 +1,6 @@
 module Bridge.Data.Rank
   ( Rank (..),
+    isUnknown,
   )
 where
 
@@ -37,3 +38,6 @@ instance Show Rank where
     Three -> "3"
     Two -> "2"
     Unknown -> "x"
+
+isUnknown :: Rank -> Bool
+isUnknown = (== Unknown)

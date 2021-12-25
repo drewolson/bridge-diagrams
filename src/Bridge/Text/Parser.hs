@@ -5,8 +5,11 @@ where
 
 import Bridge.Data.Card (Card (..))
 import Bridge.Data.Diagram (Diagram (..))
+import Bridge.Data.Diagram qualified as Diagram
 import Bridge.Data.Hand (Hand)
+import Bridge.Data.Hand qualified as Hand
 import Bridge.Data.Layout (Layout (..))
+import Bridge.Data.Layout qualified as Layout
 import Bridge.Data.Perspective (Perspective (..))
 import Bridge.Data.Rank (Rank (..))
 import Bridge.Data.Scoring (Scoring (..))
@@ -14,47 +17,13 @@ import Bridge.Data.Suit (Suit (..))
 import Bridge.Data.Vul (Vul (..))
 import Control.Applicative ((<|>))
 import Control.Applicative.Permutations (intercalateEffect, toPermutation, toPermutationWithDefault)
-import Control.Monad (join, unless, when)
 import Data.Bifunctor (first)
-import Data.List (nub)
 import Data.Text (Text, pack, strip)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, choice, errorBundlePretty, runParser, sepBy1, sepEndBy1, some, try, (<?>))
 import Text.Megaparsec.Char (char, space, space1, string, string')
 
 type Parser = Parsec Void Text
-
-knownCards :: [Card] -> [Card]
-knownCards = filter ((/= Unknown) . rank)
-
-isUnknownCard :: Maybe Card -> Bool
-isUnknownCard = \case
-  Just Card {rank = Unknown} -> True
-  _ -> False
-
-isValidLead :: Layout -> Maybe Card -> Bool
-isValidLead _ Nothing = True
-isValidLead SingleHand {} _ = True
-isValidLead Defense {perspective = West} _ = True
-isValidLead Defense {perspective = East, defender, dummy} (Just lead) =
-  lead `notElem` knownCards (defender ++ dummy)
-isValidLead SingleDummy {north, south} (Just lead) =
-  lead `notElem` knownCards (north ++ south)
-isValidLead DoubleDummy {west} (Just lead) =
-  lead `elem` knownCards west
-
-validateLead :: Layout -> Maybe Card -> Parser ()
-validateLead layout lead = do
-  unless (isValidLead layout lead) do
-    fail "Opening lead present in another hand"
-
-  when (isUnknownCard lead) do
-    fail "Opening lead cannot be an unknown spot card"
-
-uniqueCards :: [Card] -> Bool
-uniqueCards cards =
-  let known = knownCards cards
-   in known == nub known
 
 parseRank :: Parser Rank
 parseRank =
@@ -84,18 +53,7 @@ parseHand :: Parser Hand
 parseHand = do
   holdings <- sepEndBy1 parseSuitHolding space1
 
-  unless (length holdings == 4) do
-    fail "You must provide cards for all four suits"
-
-  let hand = join $ zipWith (fmap . Card) [Spades, Hearts, Diamonds, Clubs] holdings
-
-  when (length hand > 13) do
-    fail "Hand has more than 13 cards"
-
-  unless (uniqueCards hand) do
-    fail "Cards in hand must be unique"
-
-  pure hand
+  either fail pure $ Hand.fromHoldings holdings
 
 parseHands :: Parser [Hand]
 parseHands = sepBy1 parseHand (space *> char ';' <* space)
@@ -104,14 +62,7 @@ parseDeclarer :: Parser Layout
 parseDeclarer = do
   hands <- parseHands
 
-  unless (uniqueCards $ join hands) do
-    fail "Cards in deal must be unique"
-
-  case hands of
-    [north, east, south, west] -> pure $ DoubleDummy {north, east, south, west}
-    [north, south] -> pure $ SingleDummy {north, south}
-    [hand] -> pure $ SingleHand hand
-    _ -> fail "Deal must be 1, 2, or 4 hands"
+  either fail pure $ Layout.fromHands hands
 
 parsePerspective :: Parser Perspective
 parsePerspective = (West <$ char '<') <|> (East <$ char '>')
@@ -170,9 +121,7 @@ parseDiagram = do
         <*> toPermutationWithDefault Nothing (Just <$> parseScoring)
         <*> toPermutationWithDefault Nothing (Just <$> parseCard)
 
-  validateLead layout lead
-
-  pure $ Diagram {layout, vul, scoring, lead}
+  either fail pure $ Diagram.new layout vul scoring lead
 
 parse :: Text -> Either Text Diagram
 parse = first (pack . errorBundlePretty) . runParser parseDiagram "" . strip
