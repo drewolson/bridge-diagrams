@@ -7,6 +7,7 @@ module Bridge.Data.Hand
 where
 
 import Bridge.Data.Card (Card (..))
+import Bridge.Data.Card qualified as Card
 import Bridge.Data.Rank (Rank (..))
 import Bridge.Data.Suit (Suit (..))
 import Control.Monad (join, unless, when)
@@ -15,7 +16,7 @@ import Data.List (nub)
 type Hand = [Card]
 
 knownCards :: Hand -> Hand
-knownCards = filter ((/= Unknown) . rank)
+knownCards = filter (not . Card.isUnknown)
 
 uniqueCards :: Hand -> Bool
 uniqueCards hand =
