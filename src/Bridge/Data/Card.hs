@@ -1,8 +1,9 @@
 module Bridge.Data.Card
   ( Card (..),
-    isUnknown,
     enumerate,
     honors,
+    isHonor,
+    isUnknown,
   )
 where
 
@@ -19,6 +20,9 @@ data Card = Card
 
 isUnknown :: Card -> Bool
 isUnknown = Rank.isUnknown . rank
+
+isHonor :: Card -> Bool
+isHonor = Rank.isHonor . rank
 
 instance Show Card where
   show :: Card -> String

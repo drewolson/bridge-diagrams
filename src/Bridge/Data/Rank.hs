@@ -1,8 +1,9 @@
 module Bridge.Data.Rank
   ( Rank (..),
-    isUnknown,
     enumerate,
     honors,
+    isHonor,
+    isUnknown,
   )
 where
 
@@ -49,3 +50,6 @@ enumerate = [Ace .. Two]
 
 honors :: [Rank]
 honors = [Ace .. Ten]
+
+isHonor :: Rank -> Bool
+isHonor = (`elem` honors)

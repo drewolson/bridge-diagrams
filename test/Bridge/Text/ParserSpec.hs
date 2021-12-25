@@ -164,6 +164,80 @@ spec = parallel do
 
       result `shouldBe` Right expected
 
+    it "parses a double dummy hand with only three suits specified" do
+      let result = Parser.parse "akxxx qxx jtx xx; qxx akxxx xxx kx; jx jx akxxx qxxx"
+      let expected =
+            Diagram
+              { layout =
+                  DoubleDummy
+                    { north =
+                        [ Card Spades Ace,
+                          Card Spades King,
+                          Card Spades Unknown,
+                          Card Spades Unknown,
+                          Card Spades Unknown,
+                          Card Hearts Queen,
+                          Card Hearts Unknown,
+                          Card Hearts Unknown,
+                          Card Diamonds Jack,
+                          Card Diamonds Ten,
+                          Card Diamonds Unknown,
+                          Card Clubs Unknown,
+                          Card Clubs Unknown
+                        ],
+                      east =
+                        [ Card Spades Queen,
+                          Card Spades Unknown,
+                          Card Spades Unknown,
+                          Card Hearts Ace,
+                          Card Hearts King,
+                          Card Hearts Unknown,
+                          Card Hearts Unknown,
+                          Card Hearts Unknown,
+                          Card Diamonds Unknown,
+                          Card Diamonds Unknown,
+                          Card Diamonds Unknown,
+                          Card Clubs King,
+                          Card Clubs Unknown
+                        ],
+                      south =
+                        [ Card Spades Jack,
+                          Card Spades Unknown,
+                          Card Hearts Jack,
+                          Card Hearts Unknown,
+                          Card Diamonds Ace,
+                          Card Diamonds King,
+                          Card Diamonds Unknown,
+                          Card Diamonds Unknown,
+                          Card Diamonds Unknown,
+                          Card Clubs Queen,
+                          Card Clubs Unknown,
+                          Card Clubs Unknown,
+                          Card Clubs Unknown
+                        ],
+                      west =
+                        [ Card Spades Ten,
+                          Card Spades Unknown,
+                          Card Spades Unknown,
+                          Card Hearts Ten,
+                          Card Hearts Unknown,
+                          Card Hearts Unknown,
+                          Card Diamonds Queen,
+                          Card Diamonds Unknown,
+                          Card Clubs Ace,
+                          Card Clubs Jack,
+                          Card Clubs Ten,
+                          Card Clubs Unknown,
+                          Card Clubs Unknown
+                        ]
+                    },
+                vul = Nothing,
+                lead = Nothing,
+                scoring = Nothing
+              }
+
+      result `shouldBe` Right expected
+
     it "parses a single dummy hand" do
       let result = Parser.parse "akxxx qxx jtx xx; jx jx akxxx qxxx"
       let expected =
