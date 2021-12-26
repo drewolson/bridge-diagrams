@@ -36,7 +36,7 @@ buildFourthHand cards
   | not $ any Card.isUnknown cards = Card.enumerate \\ cards
   | otherwise =
     let honors = Card.honors \\ filter Card.isHonor cards
-     in honors ++ missingSpots (cards ++ honors)
+     in sort $ honors ++ missingSpots (cards ++ honors)
 
 fromHands :: [Hand] -> Either String Layout
 fromHands hands = do
@@ -46,7 +46,7 @@ fromHands hands = do
   case hands of
     [north, east, south, west] -> pure $ DoubleDummy {north, east, south, west}
     [north, east, south] ->
-      let west = sort $ buildFourthHand $ join [north, east, south]
+      let west = buildFourthHand $ join [north, east, south]
        in pure $ DoubleDummy {north, east, south, west}
     [north, south] -> pure $ SingleDummy {north, south}
     [hand] -> pure $ SingleHand hand
