@@ -13,7 +13,7 @@ import Bridge.Data.Rank (Rank (..))
 import Bridge.Data.Suit (Suit)
 import Bridge.Data.Suit qualified as Suit
 import Control.Monad (join, unless)
-import Data.List (sort, (\\))
+import Data.List ((\\))
 
 data Layout
   = SingleHand {hand :: Hand}
@@ -23,7 +23,7 @@ data Layout
   deriving (Eq, Show)
 
 buildFourthHand :: [Card] -> Hand
-buildFourthHand cards = sort $ foldMap (missingSuitCards . ofSuit) Suit.enumerate
+buildFourthHand cards = foldMap (missingSuitCards . ofSuit) Suit.enumerate
   where
     ofSuit :: Suit -> (Suit, [Card])
     ofSuit suit = (suit, filter ((== suit) . Card.suit) cards)
