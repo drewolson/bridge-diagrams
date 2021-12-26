@@ -1,7 +1,9 @@
 module Bridge.Data.Card
   ( Card (..),
     enumerate,
+    enumerateSuit,
     honors,
+    suitHonors,
     isHonor,
     isUnknown,
   )
@@ -35,9 +37,15 @@ enumerate = do
 
   pure $ Card {suit, rank}
 
+enumerateSuit :: Suit -> [Card]
+enumerateSuit s = filter ((== s) . suit) enumerate
+
 honors :: [Card]
 honors = do
   suit <- Suit.enumerate
   rank <- Rank.honors
 
   pure $ Card {suit, rank}
+
+suitHonors :: Suit -> [Card]
+suitHonors s = filter ((== s) . suit) honors

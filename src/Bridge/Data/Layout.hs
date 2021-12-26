@@ -13,7 +13,8 @@ import Bridge.Data.Rank (Rank (..))
 import Bridge.Data.Suit (Suit)
 import Bridge.Data.Suit qualified as Suit
 import Control.Monad (join, unless)
-import Data.List (sort, (\\))
+import Data.Function (on)
+import Data.List (groupBy, sort, (\\))
 
 data Layout
   = SingleHand {hand :: Hand}
@@ -22,21 +23,18 @@ data Layout
   | Defense {perspective :: Perspective, defender :: Hand, dummy :: Hand}
   deriving (Eq, Show)
 
-missingSpots :: [Card] -> [Card]
-missingSpots cards = foldMap suitSpots Suit.enumerate
-  where
-    suitSpots :: Suit -> [Card]
-    suitSpots suit = replicate (suitCount suit) (Card suit Unknown)
-
-    suitCount :: Suit -> Int
-    suitCount suit = 13 - length (filter ((== suit) . Card.suit) cards)
-
 buildFourthHand :: [Card] -> Hand
-buildFourthHand cards
-  | not $ any Card.isUnknown cards = Card.enumerate \\ cards
-  | otherwise =
-    let honors = Card.honors \\ filter Card.isHonor cards
-     in sort $ honors ++ missingSpots (cards ++ honors)
+buildFourthHand = sort . foldMap missingSuitCards . zip Suit.enumerate . groupBy ((==) `on` Card.suit) . sort
+  where
+    suitSpots :: Suit -> [Card] -> [Card]
+    suitSpots suit existing = replicate (13 - length existing) (Card suit Unknown)
+
+    missingSuitCards :: (Suit, [Card]) -> [Card]
+    missingSuitCards (suit, existing)
+      | not $ any Card.isUnknown existing = Card.enumerateSuit suit \\ existing
+      | otherwise =
+        let honors = Card.suitHonors suit \\ filter Card.isHonor existing
+         in honors ++ suitSpots suit (existing ++ honors)
 
 fromHands :: [Hand] -> Either String Layout
 fromHands hands = do

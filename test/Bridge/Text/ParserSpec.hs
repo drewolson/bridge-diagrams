@@ -164,7 +164,7 @@ spec = parallel do
 
       result `shouldBe` Right expected
 
-    it "parses a double dummy hand with only three suits specified" do
+    it "parses a double dummy hand with only three hands specified" do
       let result = Parser.parse "akxxx qxx jtx xx; qxx akxxx xxx kx; jx jx akxxx qxxx"
       let expected =
             Diagram
