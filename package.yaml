@@ -1,6 +1,6 @@
 name:                bridge-diagrams
 version:             0.1.0.0
-license:             BSD3
+license:             MIT
 author:              "Drew Olson"
 maintainer:          "drew@drewolson.org"
 copyright:           "2021 Drew Olson"
