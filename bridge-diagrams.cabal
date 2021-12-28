@@ -10,7 +10,7 @@ description:    Bridge Hand Diagrams
 author:         Drew Olson
 maintainer:     drew@drewolson.org
 copyright:      2021 Drew Olson
-license:        BSD3
+license:        MIT
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
