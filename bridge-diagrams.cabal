@@ -83,8 +83,6 @@ library
 
 executable bridge-cli-exe
   main-is: Main.hs
-  other-modules:
-      Paths_bridge_diagrams
   hs-source-dirs:
       app/Cli
   default-extensions:
@@ -133,8 +131,6 @@ executable bridge-cli-exe
 
 executable bridge-discord-exe
   main-is: Main.hs
-  other-modules:
-      Paths_bridge_diagrams
   hs-source-dirs:
       app/Discord
   default-extensions:
@@ -183,8 +179,6 @@ executable bridge-discord-exe
 
 executable bridge-slack-exe
   main-is: Main.hs
-  other-modules:
-      Paths_bridge_diagrams
   hs-source-dirs:
       app/Slack
   default-extensions:

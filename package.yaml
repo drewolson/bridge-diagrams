@@ -73,6 +73,9 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - bridge-diagrams
+    when:
+    - condition: false
+      other-modules: Paths_bridge_diagrams
 
   bridge-discord-exe:
     main:                Main.hs
@@ -83,6 +86,9 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - bridge-diagrams
+    when:
+    - condition: false
+      other-modules: Paths_bridge_diagrams
 
   bridge-slack-exe:
     main:                Main.hs
@@ -93,6 +99,9 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - bridge-diagrams
+    when:
+    - condition: false
+      other-modules: Paths_bridge_diagrams
 
 tests:
   bridge-test:
