@@ -1,0 +1,62 @@
+name:                bridge-diagrams-cli
+version:             0.1.0.0
+license:             MIT
+author:              "Drew Olson"
+maintainer:          "drew@drewolson.org"
+copyright:           "2021 Drew Olson"
+
+description:         Bridge Hand Diagrams CLI
+
+ghc-options:
+- -Werror
+- -Wall
+- -Wcompat
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wredundant-constraints
+
+default-extensions:
+- BlockArguments
+- DataKinds
+- DeriveAnyClass
+- DeriveGeneric
+- DerivingStrategies
+- FlexibleContexts
+- FlexibleInstances
+- GeneralizedNewtypeDeriving
+- ImportQualifiedPost
+- InstanceSigs
+- LambdaCase
+- MultiParamTypeClasses
+- NamedFieldPuns
+- NoMonomorphismRestriction
+- OverloadedStrings
+- PatternSynonyms
+- QuasiQuotes
+- ScopedTypeVariables
+- TypeApplications
+- TypeFamilies
+- TypeOperators
+- ViewPatterns
+
+dependencies:
+- base >= 4.7 && < 5
+- bridge-diagrams-core
+- text
+
+library:
+  source-dirs: src
+
+executables:
+  bridge-cli-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - bridge-diagrams-cli
+    when:
+    - condition: false
+      other-modules: Paths_bridge_diagrams_cli

@@ -1,0 +1,112 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           bridge-diagrams-core
+version:        0.1.0.0
+description:    Bridge Hand Diagrams
+author:         Drew Olson
+maintainer:     drew@drewolson.org
+copyright:      2021 Drew Olson
+license:        MIT
+build-type:     Simple
+
+library
+  exposed-modules:
+      Bridge.Data.Card
+      Bridge.Data.Diagram
+      Bridge.Data.Hand
+      Bridge.Data.Layout
+      Bridge.Data.Perspective
+      Bridge.Data.Rank
+      Bridge.Data.Scoring
+      Bridge.Data.Suit
+      Bridge.Data.Vul
+      Bridge.IO.Buffering
+      Bridge.Text.Formatter
+      Bridge.Text.Parser
+  other-modules:
+      Paths_bridge_diagrams_core
+  hs-source-dirs:
+      src
+  default-extensions:
+      BlockArguments
+      DataKinds
+      DeriveAnyClass
+      DeriveGeneric
+      DerivingStrategies
+      FlexibleContexts
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      ImportQualifiedPost
+      InstanceSigs
+      LambdaCase
+      MultiParamTypeClasses
+      NamedFieldPuns
+      NoMonomorphismRestriction
+      OverloadedStrings
+      PatternSynonyms
+      QuasiQuotes
+      ScopedTypeVariables
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      ViewPatterns
+  ghc-options: -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
+  build-depends:
+      base >=4.7 && <5
+    , doclayout
+    , megaparsec
+    , parser-combinators
+    , raw-strings-qq
+    , text
+  default-language: Haskell2010
+
+test-suite bridge-diagrams-core-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Bridge.Data.CardSpec
+      Bridge.Text.FormatterSpec
+      Bridge.Text.ParserSpec
+      Paths_bridge_diagrams_core
+  hs-source-dirs:
+      test
+  default-extensions:
+      BlockArguments
+      DataKinds
+      DeriveAnyClass
+      DeriveGeneric
+      DerivingStrategies
+      FlexibleContexts
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      ImportQualifiedPost
+      InstanceSigs
+      LambdaCase
+      MultiParamTypeClasses
+      NamedFieldPuns
+      NoMonomorphismRestriction
+      OverloadedStrings
+      PatternSynonyms
+      QuasiQuotes
+      ScopedTypeVariables
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      ViewPatterns
+  ghc-options: -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      QuickCheck
+    , base >=4.7 && <5
+    , bridge-diagrams-core
+    , doclayout
+    , hspec
+    , hspec-discover
+    , megaparsec
+    , parser-combinators
+    , raw-strings-qq
+    , text
+  default-language: Haskell2010
