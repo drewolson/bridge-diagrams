@@ -1,4 +1,5 @@
 ghc-options:
+- -O0
 - -Werror
 - -Wall
 - -Wcompat

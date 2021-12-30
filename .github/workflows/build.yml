@@ -21,7 +21,7 @@ jobs:
           key: ${{ runner.os }}
       - name: Permissions bug workaround
         run: "chown -R $(id -un):$(id -gn) ~"
-      - run: stack test
+      - run: stack test --ghc-options=-O2
       - run: cp $(stack exec -- which bridge-cli-exe) .
       - run: cp $(stack exec -- which bridge-slack-exe) .
       - run: cp $(stack exec -- which bridge-discord-exe) .
