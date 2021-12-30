@@ -30,10 +30,12 @@ jobs:
       - name: Permissions bug workaround
         run: "chown -R $(id -un):$(id -gn) ~"
       - run: stack test --ghc-options=-O2
-      - run: cp $(stack exec which bridge-cli-exe) .
-      - run: cp $(stack exec which bridge-slack-exe) .
-      - run: cp $(stack exec which bridge-discord-exe) .
+      - run: mkdir artifacts
+      - run: cp $(stack exec which bridge-cli-exe) ./artifacts
+      - run: cp $(stack exec which bridge-slack-exe) ./artifacts
+      - run: cp $(stack exec which bridge-discord-exe) ./artifacts
+      - run: tar -cvf artifacts.tar ./artifacts
       - uses: actions/upload-artifact@v2
         with:
-          path: ./bridge-*-exe
+          path: artifacts.tar
         if: ${{ github.ref == 'refs/heads/main' }}
