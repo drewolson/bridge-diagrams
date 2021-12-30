@@ -20,15 +20,15 @@ data Card = Card
   }
   deriving (Eq, Ord)
 
+instance Show Card where
+  show :: Card -> String
+  show Card {suit, rank} = show suit <> show rank
+
 isUnknown :: Card -> Bool
 isUnknown = Rank.isUnknown . rank
 
 isHonor :: Card -> Bool
 isHonor = Rank.isHonor . rank
-
-instance Show Card where
-  show :: Card -> String
-  show Card {suit, rank} = show suit <> show rank
 
 enumerate :: [Card]
 enumerate = do
