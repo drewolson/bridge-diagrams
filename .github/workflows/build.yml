@@ -22,9 +22,9 @@ jobs:
       - name: Permissions bug workaround
         run: "chown -R $(id -un):$(id -gn) ~"
       - run: stack test --ghc-options=-O2
-      - run: cp $(stack exec -- which bridge-cli-exe) .
-      - run: cp $(stack exec -- which bridge-slack-exe) .
-      - run: cp $(stack exec -- which bridge-discord-exe) .
+      - run: cp $(stack exec which bridge-cli-exe) .
+      - run: cp $(stack exec which bridge-slack-exe) .
+      - run: cp $(stack exec which bridge-discord-exe) .
       - uses: actions/upload-artifact@v2
         with:
           path: ./bridge-cli-exe
