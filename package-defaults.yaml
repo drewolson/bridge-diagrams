@@ -1,0 +1,31 @@
+ghc-options:
+- -Werror
+- -Wall
+- -Wcompat
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wredundant-constraints
+
+default-extensions:
+- BlockArguments
+- DataKinds
+- DeriveAnyClass
+- DeriveGeneric
+- DerivingStrategies
+- FlexibleContexts
+- FlexibleInstances
+- GeneralizedNewtypeDeriving
+- ImportQualifiedPost
+- InstanceSigs
+- LambdaCase
+- MultiParamTypeClasses
+- NamedFieldPuns
+- NoMonomorphismRestriction
+- OverloadedStrings
+- PatternSynonyms
+- QuasiQuotes
+- ScopedTypeVariables
+- TypeApplications
+- TypeFamilies
+- TypeOperators
+- ViewPatterns
