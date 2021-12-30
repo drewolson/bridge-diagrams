@@ -83,14 +83,11 @@ parseLayout = try parseDefense <|> parseDeclarer
 parseVul :: Parser Vul
 parseVul =
   choice
-    [ RR <$ try (vul <* char '/' <* vul),
-      WR <$ try (nonVul <* char '/' <* vul),
-      RW <$ try (vul <* char '/' <* nonVul),
-      WW <$ nonVul <* char '/' <* nonVul
+    [ RR <$ string' "r/r",
+      WR <$ string' "w/r",
+      RW <$ string' "r/w",
+      WW <$ string' "w/w"
     ]
-  where
-    nonVul = string' "w"
-    vul = string' "r"
 
 parseSuit :: Parser Suit
 parseSuit =
