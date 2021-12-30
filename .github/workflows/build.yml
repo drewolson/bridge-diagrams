@@ -5,7 +5,15 @@ on:
   - pull_request
 
 jobs:
-  test:
+  check-formatting:
+    name: Check Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: mrkkrp/ormolu-action@v5
+
+  build:
+    needs: check-formatting
     name: Build, Test & Upload
     runs-on: ubuntu-latest
     container:
@@ -27,13 +35,5 @@ jobs:
       - run: cp $(stack exec which bridge-discord-exe) .
       - uses: actions/upload-artifact@v2
         with:
-          path: ./bridge-cli-exe
-        if: ${{ github.ref == 'refs/heads/main' }}
-      - uses: actions/upload-artifact@v2
-        with:
-          path: ./bridge-slack-exe
-        if: ${{ github.ref == 'refs/heads/main' }}
-      - uses: actions/upload-artifact@v2
-        with:
-          path: ./bridge-discord-exe
+          path: ./bridge-*-exe
         if: ${{ github.ref == 'refs/heads/main' }}
