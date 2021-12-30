@@ -1,6 +1,6 @@
 # Bridge Diagrams
 
-A CLI, Discord bot and Slack bot for generating plain-text bridge diagrams.
+A CLI, Discord bot, and Slack bot for generating plain-text bridge diagrams.
 
 ## Build
 
@@ -45,13 +45,13 @@ IMPs       ♥6543
            ♣AQT84
 ```
 
-The discord bot needs a `DISCORD_TOKEN`:
+The Discord bot needs a `DISCORD_TOKEN`:
 
 ```
 DISCORD_TOKEN=<redacted> stack run bridge-discord-exe
 ```
 
-The slack bot uses [socket mode](https://api.slack.com/apis/connections/socket)
+The Slack bot uses [socket mode](https://api.slack.com/apis/connections/socket)
 and needs a bot token and a user token:
 
 ```
