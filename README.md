@@ -65,7 +65,8 @@ by the bot.
 ### Slack
 
 The Slack bot uses [socket mode](https://api.slack.com/apis/connections/socket)
-and needs a bot token and a user token:
+and needs a [bot token](https://api.slack.com/authentication/token-types#bot)
+and a [user token](https://api.slack.com/authentication/token-types#user):
 
 ```
 SLACK_TOKEN=<redacted> SLACK_USER_TOKEN=<redacted> stack run bridge-slack-exe
