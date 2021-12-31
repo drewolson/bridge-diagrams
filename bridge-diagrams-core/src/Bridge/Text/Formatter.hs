@@ -14,6 +14,7 @@ import Bridge.Data.Scoring (Scoring (..))
 import Bridge.Data.Suit (Suit (..))
 import Bridge.Data.Vul (Vul (..))
 import Data.List (sort)
+import Data.Maybe (catMaybes)
 import Data.Text (Text, pack)
 import Text.DocLayout (Doc, chomp, empty, lblock, literal, render, vcat, vsep)
 
@@ -22,6 +23,11 @@ block = lblock 11
 
 emptyBlock :: Doc Text
 emptyBlock = block empty
+
+linesToBlock :: [Doc Text] -> Doc Text
+linesToBlock = \case
+  [] -> emptyBlock
+  l -> block $ vcat l
 
 centerCompass :: Doc Text
 centerCompass =
@@ -68,23 +74,18 @@ handBlock = block . vcat . fmap literal . handLines
           holding = foldMap (pack . show) $ sort suitRanks
        in pack (show suit) <> holding
 
-vulLine :: Maybe Vul -> Doc Text
-vulLine = \case
-  Nothing -> literal "Vul: N/A"
-  Just vul -> literal $ "Vul: " <> pack (show vul)
+vulLine :: Vul -> Doc Text
+vulLine vul = literal $ "Vul: " <> pack (show vul)
 
-scoringLine :: Maybe Scoring -> Doc Text
-scoringLine = \case
-  Nothing -> empty
-  Just scoring -> literal $ pack $ show scoring
+scoringLine :: Scoring -> Doc Text
+scoringLine = literal . pack . show
 
 infoBlock :: Maybe Vul -> Maybe Scoring -> Doc Text
-infoBlock Nothing Nothing = emptyBlock
 infoBlock vul scoring =
-  block $
-    vcat
-      [ vulLine vul,
-        scoringLine scoring
+  linesToBlock $
+    catMaybes
+      [ vulLine <$> vul,
+        scoringLine <$> scoring
       ]
 
 leadBlock :: Maybe Card -> Doc Text
