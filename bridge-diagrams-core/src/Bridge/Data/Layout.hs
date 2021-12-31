@@ -36,6 +36,17 @@ buildFourthHand cards = foldMap (missingSuitCards . ofSuit) Suit.enumerate
             hand = honors ++ repeat (Card suit Unknown)
          in take (13 - length existing) hand
 
+fromThreeHands :: Hand -> Hand -> Hand -> Either String Layout
+fromThreeHands north east south = do
+  let existing = join [north, south, east]
+
+  unless (length existing == 39) do
+    Left "All 39 cards must be specified when providing 3 hands"
+
+  let west = buildFourthHand existing
+
+  pure $ DoubleDummy {north, east, south, west}
+
 fromHands :: [Hand] -> Either String Layout
 fromHands hands = do
   unless (Hand.uniqueCards $ join hands) do
@@ -43,9 +54,7 @@ fromHands hands = do
 
   case hands of
     [north, east, south, west] -> pure $ DoubleDummy {north, east, south, west}
-    [north, east, south] ->
-      let west = buildFourthHand $ join [north, east, south]
-       in pure $ DoubleDummy {north, east, south, west}
+    [north, east, south] -> fromThreeHands north east south
     [north, south] -> pure $ SingleDummy {north, south}
     [hand] -> pure $ SingleHand hand
     _ -> Left "Deal must be 1, 2, 3, or 4 hands"

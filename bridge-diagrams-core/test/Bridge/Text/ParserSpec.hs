@@ -12,6 +12,7 @@ import Bridge.Data.Scoring (Scoring (Imps))
 import Bridge.Data.Suit (Suit (..))
 import Bridge.Data.Vul (Vul (..))
 import Bridge.Text.Parser qualified as Parser
+import Data.Either (fromLeft)
 import Data.Either qualified as Either
 import Data.Text qualified as Text
 import Test.Hspec (Spec, describe, it, parallel, shouldBe, shouldSatisfy)
@@ -237,6 +238,12 @@ spec = parallel do
               }
 
       result `shouldBe` Right expected
+
+    it "does not parse a double dummy hand with only three hands specified if less than 39 cards are specified" do
+      let result = Parser.parse "akx - - -; qxx - - -; jx - - -"
+      let err = fromLeft "" result
+
+      err `shouldSatisfy` Text.isInfixOf "All 39 cards must be specified when providing 3 hands"
 
     it "parses a single dummy hand" do
       let result = Parser.parse "akxxx qxx jtx xx; jx jx akxxx qxxx"
