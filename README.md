@@ -49,7 +49,8 @@ IMPs       ♥6543
 
 ### Discord
 
-The Discord bot needs a `DISCORD_TOKEN`:
+The Discord bot needs a `DISCORD_TOKEN` with scopes that allow for connecting to
+the server, sending messages, and managing messages.
 
 ```
 DISCORD_TOKEN=<redacted> stack run bridge-discord-exe
@@ -66,7 +67,18 @@ by the bot.
 
 The Slack bot uses [socket mode](https://api.slack.com/apis/connections/socket)
 and needs a [bot token](https://api.slack.com/authentication/token-types#bot)
-and a [user token](https://api.slack.com/authentication/token-types#user):
+and a [user token](https://api.slack.com/authentication/token-types#user).
+
+The bot token needs the following scopes:
+
+* chat:write
+* chat:write.customize
+* chat:write.public
+* commands
+
+The user token needs the following scopes:
+
+* chat:write
 
 ```
 SLACK_TOKEN=<redacted> SLACK_USER_TOKEN=<redacted> stack run bridge-slack-exe
