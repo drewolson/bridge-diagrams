@@ -5,15 +5,7 @@ on:
   - pull_request
 
 jobs:
-  check-formatting:
-    name: Check Formatting
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: mrkkrp/ormolu-action@v5
-
   build:
-    needs: check-formatting
     name: Build, Test & Upload
     runs-on: ubuntu-latest
     container:
@@ -29,7 +21,10 @@ jobs:
           key: ${{ runner.os }}
       - name: Permissions bug workaround
         run: "chown -R $(id -un):$(id -gn) ~"
-      - run: stack test --ghc-options=-O2
+      - name: Check Formatting
+        run: make format-check
+      - name: Test
+        run: stack test --ghc-options=-O2
       - run: mkdir artifacts
       - run: cp $(stack exec which bridge-cli-exe) ./artifacts
       - run: cp $(stack exec which bridge-slack-exe) ./artifacts
