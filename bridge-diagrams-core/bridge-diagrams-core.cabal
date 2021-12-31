@@ -26,6 +26,7 @@ library
       Bridge.Data.Vul
       Bridge.IO.Buffering
       Bridge.Text.Formatter
+      Bridge.Text.Help
       Bridge.Text.Parser
   other-modules:
       Paths_bridge_diagrams_core

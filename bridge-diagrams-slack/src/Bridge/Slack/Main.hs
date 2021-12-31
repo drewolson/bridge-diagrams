@@ -17,6 +17,7 @@ import Bridge.Slack.Types
     pattern BridgeHelpCommand,
   )
 import Bridge.Text.Formatter qualified as Formatter
+import Bridge.Text.Help qualified as Help
 import Bridge.Text.Parser qualified as Parser
 import Control.Monad (MonadPlus (mzero), forever, void)
 import Control.Monad.IO.Class (MonadIO (liftIO))
@@ -84,7 +85,7 @@ receive = liftIO . WS.receiveData
 
 handleHelpCommand :: MonadIO m => WS.Connection -> Event -> m ()
 handleHelpCommand conn event =
-  sendJson conn $ errorAck event $ Formatter.codeBlock Formatter.helpText
+  sendJson conn $ errorAck event $ Formatter.codeBlock Help.helpText
 
 handleBridgeCommand :: MonadIO m => String -> WS.Connection -> Event -> SlashCommand -> m ()
 handleBridgeCommand token conn event slashCommand@SlashCommand {slashCommandText} = do

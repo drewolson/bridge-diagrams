@@ -5,6 +5,7 @@ where
 
 import Bridge.IO.Buffering qualified as Buffering
 import Bridge.Text.Formatter qualified as Formatter
+import Bridge.Text.Help qualified as Help
 import Bridge.Text.Parser qualified as Parser
 import Control.Monad (void)
 import Data.Either.Combinators (mapBoth)
@@ -63,7 +64,7 @@ helpHandler m = do
   deleteMessage m
 
   withDm m \channel -> do
-    let help = Formatter.codeBlock Formatter.helpText
+    let help = Formatter.codeBlock Help.helpText
     void $ restCall $ CreateMessage (channelId channel) help
 
 commandHandler :: Message -> Text -> DiscordHandler ()

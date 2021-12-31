@@ -4,6 +4,7 @@ module Bridge.Cli.Main
 where
 
 import Bridge.Text.Formatter qualified as Formatter
+import Bridge.Text.Help qualified as Help
 import Bridge.Text.Parser qualified as Parser
 import Data.Text.IO qualified as Text.IO
 import System.Environment (getArgs)
@@ -17,7 +18,7 @@ main = do
     _ -> parseHand
 
 printHelp :: IO ()
-printHelp = Text.IO.putStrLn Formatter.helpText
+printHelp = Text.IO.putStrLn Help.helpText
 
 parseHand :: IO ()
 parseHand = do
