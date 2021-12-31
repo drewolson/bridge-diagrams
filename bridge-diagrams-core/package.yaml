@@ -1,9 +1,8 @@
+_package-common: !include "../package-common.yaml"
+
 name:                bridge-diagrams-core
 version:             0.1.0.0
-license:             MIT
-author:              "Drew Olson"
-maintainer:          "drew@drewolson.org"
-copyright:           "2021-present Drew Olson"
+<<: *common-legal
 
 description:         Bridge Hand Diagrams
 
@@ -23,12 +22,7 @@ library:
 
 tests:
   bridge-diagrams-core-test:
-    main:                Spec.hs
-    source-dirs:         test
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+    <<: *common-test
     dependencies:
     - bridge-diagrams-core
     - QuickCheck
