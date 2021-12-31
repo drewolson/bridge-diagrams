@@ -25,6 +25,9 @@ import Text.Megaparsec.Char (char, space, space1, string, string')
 
 type Parser = Parsec Void Text
 
+rightOrFail :: MonadFail m => Either String a -> m a
+rightOrFail = either fail pure
+
 parseRank :: Parser Rank
 parseRank =
   (Ace <$ string' "a")
@@ -53,7 +56,7 @@ parseHand :: Parser Hand
 parseHand = do
   holdings <- sepEndBy1 parseSuitHolding space1
 
-  either fail pure $ Hand.fromHoldings holdings
+  rightOrFail $ Hand.fromHoldings holdings
 
 parseHands :: Parser [Hand]
 parseHands = sepBy1 parseHand (space *> char ';' <* space)
@@ -62,7 +65,7 @@ parseDeclarer :: Parser Layout
 parseDeclarer = do
   hands <- parseHands
 
-  either fail pure $ Layout.fromHands hands
+  rightOrFail $ Layout.fromHands hands
 
 parsePerspective :: Parser Perspective
 parsePerspective = (West <$ char '<') <|> (East <$ char '>')
@@ -118,7 +121,7 @@ parseDiagram = do
         <*> toPermutationWithDefault Nothing (Just <$> parseScoring)
         <*> toPermutationWithDefault Nothing (Just <$> parseCard)
 
-  either fail pure $ Diagram.new layout vul scoring lead
+  rightOrFail $ Diagram.new layout vul scoring lead
 
 parse :: Text -> Either Text Diagram
 parse = first (pack . errorBundlePretty) . runParser parseDiagram "" . strip
