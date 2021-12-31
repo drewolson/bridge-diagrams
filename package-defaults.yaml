@@ -30,3 +30,6 @@ default-extensions:
 - TypeFamilies
 - TypeOperators
 - ViewPatterns
+
+build-tools:
+- ormolu

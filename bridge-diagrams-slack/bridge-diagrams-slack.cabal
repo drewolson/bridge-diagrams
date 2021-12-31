@@ -45,6 +45,8 @@ library
       TypeOperators
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
+  build-tool-depends:
+      ormolu:ormolu
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -87,6 +89,8 @@ executable bridge-slack-exe
       TypeOperators
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-tool-depends:
+      ormolu:ormolu
   build-depends:
       aeson
     , base >=4.7 && <5

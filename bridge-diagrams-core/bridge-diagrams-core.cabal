@@ -56,6 +56,8 @@ library
       TypeOperators
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
+  build-tool-depends:
+      ormolu:ormolu
   build-depends:
       base >=4.7 && <5
     , doclayout
@@ -99,6 +101,8 @@ test-suite bridge-diagrams-core-test
       TypeOperators
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-tool-depends:
+      ormolu:ormolu
   build-depends:
       QuickCheck
     , base >=4.7 && <5

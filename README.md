@@ -14,6 +14,21 @@ $ stack build
 $ stack test
 ```
 
+## Format
+
+[Ormolu](https://github.com/tweag/ormolu) is used for formatting. The [Haskell
+Language Server](https://github.com/haskell/haskell-language-server) should
+automatically format using ormolu by default, however if you'd like to format
+the code explicitly, you can use the following make tasks:
+
+```
+make format
+```
+
+```
+make format-check
+```
+
 ## Run
 
 ### CLI
