@@ -16,6 +16,8 @@ $ stack test
 
 ## Run
 
+### CLI
+
 The CLI reads input from `stdin`:
 
 ```
@@ -45,15 +47,33 @@ IMPs       ♥6543
            ♣AQT84
 ```
 
+### Discord
+
 The Discord bot needs a `DISCORD_TOKEN`:
 
 ```
 DISCORD_TOKEN=<redacted> stack run bridge-discord-exe
 ```
 
+Once associated with a server, messages prefixed with `!bridge` will be handled
+by the bot.
+
+```
+!bridge akxxx qtx - qjxxx
+```
+
+### Slack
+
 The Slack bot uses [socket mode](https://api.slack.com/apis/connections/socket)
 and needs a bot token and a user token:
 
 ```
 SLACK_TOKEN=<redacted> SLACK_USER_TOKEN=<redacted> stack run bridge-slack-exe
+```
+
+The bot should be installed as a slash command. I tend to choose `/bridge` as
+the command. Messages can then be sent to the bot via the slash command.
+
+```
+/bridge akxxx qtx - qjxxx
 ```
