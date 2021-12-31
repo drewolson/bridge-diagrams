@@ -27,11 +27,16 @@ jobs:
         run: make format-check
       - name: Test
         run: stack test --ghc-options=-O2
-      - run: mkdir artifacts
-      - run: cp $(stack exec which bridge-cli-exe) ./artifacts
-      - run: cp $(stack exec which bridge-slack-exe) ./artifacts
-      - run: cp $(stack exec which bridge-discord-exe) ./artifacts
-      - run: tar -cvf artifacts.tar ./artifacts
+      - name: Make Artifacts Directory
+        run: mkdir artifacts
+      - name: Copy CLI Artifact
+        run: cp $(stack exec which bridge-cli-exe) ./artifacts
+      - name: Copy Slack Artifact
+        run: cp $(stack exec which bridge-slack-exe) ./artifacts
+      - name: Copy Discord Artifact
+        run: cp $(stack exec which bridge-discord-exe) ./artifacts
+      - name: Tar Artifacts
+        run: tar -cvf artifacts.tar ./artifacts
       - uses: actions/upload-artifact@v2
         with:
           path: artifacts.tar
