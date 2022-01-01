@@ -20,7 +20,7 @@ import Control.Applicative.Permutations (intercalateEffect, toPermutation, toPer
 import Data.Bifunctor (first)
 import Data.Text (Text, pack, strip)
 import Data.Void (Void)
-import Text.Megaparsec (Parsec, choice, errorBundlePretty, runParser, sepBy1, sepEndBy1, some, try, (<?>))
+import Text.Megaparsec (Parsec, choice, eof, errorBundlePretty, runParser, sepBy1, sepEndBy1, some, try, (<?>))
 import Text.Megaparsec.Char (char, space, space1, string, string')
 
 type Parser = Parsec Void Text
@@ -127,6 +127,8 @@ parseDiagram = do
         <*> toPermutationWithDefault Nothing (Just <$> parseVul)
         <*> toPermutationWithDefault Nothing (Just <$> parseScoring)
         <*> toPermutationWithDefault Nothing (Just <$> parseCard)
+
+  eof
 
   rightOrFail $ Diagram.new layout vul scoring lead
 

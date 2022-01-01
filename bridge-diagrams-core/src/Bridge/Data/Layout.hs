@@ -53,7 +53,7 @@ fromThreeHands north east south = do
 fromHands :: [Hand] -> Either String Layout
 fromHands hands = do
   unless (Hand.uniqueCards $ join hands) do
-    Left "Cards in deal must be unique"
+    Left $ "Duplicate cards in deal: " <> Hand.showDuplicates (join hands)
 
   case hands of
     [north, east, south, west] -> pure $ DoubleDummy {north, east, south, west}

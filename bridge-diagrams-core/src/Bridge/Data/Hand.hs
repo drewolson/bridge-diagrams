@@ -1,8 +1,10 @@
 module Bridge.Data.Hand
   ( Hand,
+    duplicatedCards,
     fromHoldings,
     knownCards,
     uniqueCards,
+    showDuplicates,
   )
 where
 
@@ -11,7 +13,7 @@ import Bridge.Data.Card qualified as Card
 import Bridge.Data.Rank (Rank (..))
 import Bridge.Data.Suit (Suit (..))
 import Control.Monad (join, unless, when)
-import Data.List (nub)
+import Data.List (intercalate, nub, (\\))
 
 type Hand = [Card]
 
@@ -22,6 +24,14 @@ uniqueCards :: Hand -> Bool
 uniqueCards hand =
   let known = knownCards hand
    in known == nub known
+
+duplicatedCards :: Hand -> [Card]
+duplicatedCards hand =
+  let known = knownCards hand
+   in known \\ nub known
+
+showDuplicates :: Hand -> String
+showDuplicates = intercalate "," . fmap show . duplicatedCards
 
 fromHoldings :: [[Rank]] -> Either String Hand
 fromHoldings holdings = do
@@ -34,6 +44,6 @@ fromHoldings holdings = do
     Left "Hand has more than 13 cards"
 
   unless (uniqueCards hand) do
-    Left "Cards in hand must be unique"
+    Left $ "Duplicate cards in hand: " <> showDuplicates hand
 
   pure hand
