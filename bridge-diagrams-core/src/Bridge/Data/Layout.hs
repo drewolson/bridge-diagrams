@@ -11,10 +11,11 @@ import Bridge.Data.Hand (Hand)
 import Bridge.Data.Hand qualified as Hand
 import Bridge.Data.Perspective (Perspective)
 import Bridge.Data.Rank (Rank (..))
+import Bridge.Data.Rank qualified as Rank
 import Bridge.Data.Suit (Suit)
 import Bridge.Data.Suit qualified as Suit
-import Control.Monad (join, unless)
-import Data.List ((\\))
+import Control.Monad (join, unless, when)
+import Data.List (nub, (\\))
 
 data Layout
   = SingleHand {hand :: Hand}
@@ -62,4 +63,13 @@ fromHands hands = do
     _ -> Left "Deal must be 1, 2, 3, or 4 hands"
 
 suitCombination :: [Rank] -> [Rank] -> Either String Layout
-suitCombination top bottom = pure $ SuitCombination {top, bottom}
+suitCombination top bottom = do
+  let knownRanks = filter (not . Rank.isUnknown) $ join [top, bottom]
+
+  when (length knownRanks /= length (nub knownRanks)) do
+    Left "Suit combination ranks must be unique"
+
+  when (length (join [top, bottom]) > 13) do
+    Left "Suit combination cannot contain more than 13 cards"
+
+  pure $ SuitCombination {top, bottom}

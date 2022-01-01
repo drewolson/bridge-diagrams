@@ -72,6 +72,7 @@ test-suite bridge-diagrams-core-test
   main-is: Spec.hs
   other-modules:
       Bridge.Data.CardSpec
+      Bridge.Data.LayoutSpec
       Bridge.Text.FormatterSpec
       Bridge.Text.ParserSpec
       Paths_bridge_diagrams_core
