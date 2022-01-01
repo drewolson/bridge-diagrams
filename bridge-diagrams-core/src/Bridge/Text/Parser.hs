@@ -80,8 +80,15 @@ parseDefense = do
     East -> Defense {perspective = East, defender = b, dummy = a}
     West -> Defense {perspective = West, defender = a, dummy = b}
 
+parseSuitCombination :: Parser Layout
+parseSuitCombination = do
+  top <- parseSuitHolding <* space <* char '|' <* space
+  bottom <- parseSuitHolding
+
+  rightOrFail $ Layout.suitCombination top bottom
+
 parseLayout :: Parser Layout
-parseLayout = try parseDefense <|> parseDeclarer
+parseLayout = try parseSuitCombination <|> try parseDefense <|> parseDeclarer
 
 parseVul :: Parser Vul
 parseVul =

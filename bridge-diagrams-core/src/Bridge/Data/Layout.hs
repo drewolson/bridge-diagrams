@@ -1,6 +1,7 @@
 module Bridge.Data.Layout
   ( Layout (..),
     fromHands,
+    suitCombination,
   )
 where
 
@@ -20,6 +21,7 @@ data Layout
   | SingleDummy {north :: Hand, south :: Hand}
   | DoubleDummy {north :: Hand, east :: Hand, south :: Hand, west :: Hand}
   | Defense {perspective :: Perspective, defender :: Hand, dummy :: Hand}
+  | SuitCombination {top :: [Rank], bottom :: [Rank]}
   deriving (Eq, Show)
 
 buildFourthHand :: [Card] -> Hand
@@ -58,3 +60,6 @@ fromHands hands = do
     [north, south] -> pure $ SingleDummy {north, south}
     [hand] -> pure $ SingleHand hand
     _ -> Left "Deal must be 1, 2, 3, or 4 hands"
+
+suitCombination :: [Rank] -> [Rank] -> Either String Layout
+suitCombination top bottom = pure $ SuitCombination {top, bottom}

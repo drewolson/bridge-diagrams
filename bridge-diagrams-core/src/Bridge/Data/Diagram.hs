@@ -23,7 +23,6 @@ data Diagram = Diagram
 
 isUniqueLead :: Layout -> Maybe Card -> Bool
 isUniqueLead _ Nothing = True
-isUniqueLead SingleHand {} _ = True
 isUniqueLead Defense {perspective = West} _ = True
 isUniqueLead Defense {perspective = East, defender, dummy} (Just lead) =
   lead `notElem` Hand.knownCards (defender ++ dummy)
@@ -31,6 +30,7 @@ isUniqueLead SingleDummy {north, south} (Just lead) =
   lead `notElem` Hand.knownCards (north ++ south)
 isUniqueLead DoubleDummy {west} (Just lead) =
   lead `elem` Hand.knownCards west
+isUniqueLead _ _ = True
 
 isUnknownLead :: Maybe Card -> Bool
 isUnknownLead Nothing = False

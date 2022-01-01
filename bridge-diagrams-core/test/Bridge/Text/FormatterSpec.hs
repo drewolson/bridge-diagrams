@@ -23,6 +23,29 @@ trimLines = Text.unlines . fmap Text.stripEnd . Text.lines
 spec :: Spec
 spec = parallel do
   describe "format" do
+    it "formats a suit combination" do
+      let result =
+            Formatter.format
+              Diagram
+                { layout =
+                    SuitCombination
+                      { top = [Ace, King, Unknown, Unknown, Unknown],
+                        bottom = [Queen, Ten, Unknown]
+                      },
+                  vul = Nothing,
+                  lead = Nothing,
+                  scoring = Nothing
+                }
+
+      let expected =
+            [r|
+AKxxx
+-----
+QTx
+|]
+
+      trimLines result `shouldBe` Text.drop 1 expected
+
     it "formats a single hand" do
       let result =
             Formatter.format

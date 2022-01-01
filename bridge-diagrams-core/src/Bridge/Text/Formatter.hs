@@ -10,12 +10,14 @@ import Bridge.Data.Diagram (Diagram (..))
 import Bridge.Data.Hand (Hand)
 import Bridge.Data.Layout (Layout (..))
 import Bridge.Data.Perspective (Perspective (..))
+import Bridge.Data.Rank (Rank)
 import Bridge.Data.Scoring (Scoring (..))
 import Bridge.Data.Suit (Suit (..))
 import Bridge.Data.Vul (Vul (..))
 import Data.List (sort)
 import Data.Maybe (catMaybes)
 import Data.Text (Text, pack)
+import Data.Text qualified as Text
 import Text.DocLayout (Doc, chomp, empty, lblock, literal, render, vcat, vsep)
 
 block :: Doc Text -> Doc Text
@@ -62,17 +64,19 @@ lowerRightCompass =
         literal " ----- "
       ]
 
+rankLine :: [Rank] -> Doc Text
+rankLine = literal . foldMap (pack . show) . sort
+
 handBlock :: Hand -> Doc Text
-handBlock = block . vcat . fmap literal . handLines
+handBlock = block . vcat . handLines
   where
-    handLines :: Hand -> [Text]
+    handLines :: Hand -> [Doc Text]
     handLines hand = suitLine hand <$> [Spades, Hearts, Diamonds, Clubs]
 
-    suitLine :: Hand -> Suit -> Text
+    suitLine :: Hand -> Suit -> Doc Text
     suitLine hand suit =
       let suitRanks = Card.rank <$> filter ((== suit) . Card.suit) hand
-          holding = foldMap (pack . show) $ sort suitRanks
-       in pack (show suit) <> holding
+       in literal (pack $ show suit) <> rankLine suitRanks
 
 vulLine :: Vul -> Doc Text
 vulLine vul = literal $ "Vul: " <> pack (show vul)
@@ -92,6 +96,16 @@ leadBlock :: Maybe Card -> Doc Text
 leadBlock = \case
   Just card -> block $ literal $ "Lead: " <> pack (show card)
   Nothing -> emptyBlock
+
+comboBlock :: [Rank] -> [Rank] -> Doc Text
+comboBlock top bottom =
+  let width = maximum $ fmap length [top, bottom]
+   in block $
+        vcat
+          [ rankLine top,
+            literal $ Text.replicate width "-",
+            rankLine bottom
+          ]
 
 diagramDocument :: Diagram -> Doc Text
 diagramDocument = \case
@@ -129,6 +143,8 @@ diagramDocument = \case
       ]
   Diagram {layout = SingleHand {hand}, vul, scoring} ->
     handBlock hand <> infoBlock vul scoring
+  Diagram {layout = SuitCombination {top, bottom}, vul, scoring} ->
+    comboBlock top bottom <> infoBlock vul scoring
 
 format :: Diagram -> Text
 format = render Nothing . chomp . diagramDocument
