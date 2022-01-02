@@ -8,14 +8,13 @@ where
 import Bridge.Data.Card (Card (..))
 import Bridge.Data.Card qualified as Card
 import Bridge.Data.Hand (Hand)
-import Bridge.Data.Hand qualified as Hand
 import Bridge.Data.Perspective (Perspective)
 import Bridge.Data.Rank (Rank (..))
-import Bridge.Data.Rank qualified as Rank
 import Bridge.Data.Suit (Suit)
 import Bridge.Data.Suit qualified as Suit
+import Bridge.Data.Unknown qualified as Unknown
 import Control.Monad (join, unless, when)
-import Data.List (nub, (\\))
+import Data.List ((\\))
 
 data Layout
   = SingleHand {hand :: Hand}
@@ -33,7 +32,7 @@ buildFourthHand cards = foldMap (missingSuitCards . ofSuit) Suit.enumerate
 
     missingSuitCards :: (Suit, [Card]) -> [Card]
     missingSuitCards (suit, existing)
-      | not $ any Card.isUnknown existing = Card.enumerateSuit suit \\ existing
+      | Unknown.areAllKnown existing = Card.enumerateSuit suit \\ existing
       | otherwise =
         let honors = Card.suitHonors suit \\ filter Card.isHonor existing
             hand = honors ++ repeat (Card suit Unknown)
@@ -52,8 +51,8 @@ fromThreeHands north east south = do
 
 fromHands :: [Hand] -> Either String Layout
 fromHands hands = do
-  unless (Hand.uniqueCards $ join hands) do
-    Left $ "Duplicate cards in deal: " <> Hand.showDuplicates (join hands)
+  unless (Unknown.hasUniqueEntries $ join hands) do
+    Left $ "Duplicate cards in deal: " <> Unknown.showDuplicates (join hands)
 
   case hands of
     [north, east, south, west] -> pure $ DoubleDummy {north, east, south, west}
@@ -64,10 +63,8 @@ fromHands hands = do
 
 suitCombination :: [Rank] -> [Rank] -> Either String Layout
 suitCombination top bottom = do
-  let knownRanks = filter (not . Rank.isUnknown) $ join [top, bottom]
-
-  when (length knownRanks /= length (nub knownRanks)) do
-    Left "Suit combination ranks must be unique"
+  unless (Unknown.hasUniqueEntries $ join [top, bottom]) do
+    Left $ "Suit combination has duplicate ranks: " <> Unknown.showDuplicates (join [top, bottom])
 
   when (length (join [top, bottom]) > 13) do
     Left "Suit combination cannot contain more than 13 cards"

@@ -5,11 +5,10 @@ module Bridge.Data.Diagram
 where
 
 import Bridge.Data.Card (Card)
-import Bridge.Data.Card qualified as Card
-import Bridge.Data.Hand qualified as Hand
 import Bridge.Data.Layout (Layout (..))
 import Bridge.Data.Perspective (Perspective (..))
 import Bridge.Data.Scoring (Scoring)
+import Bridge.Data.Unknown qualified as Unknown
 import Bridge.Data.Vul (Vul)
 import Control.Monad (unless, when)
 
@@ -25,16 +24,16 @@ isUniqueLead :: Layout -> Maybe Card -> Bool
 isUniqueLead _ Nothing = True
 isUniqueLead Defense {perspective = West} _ = True
 isUniqueLead Defense {perspective = East, defender, dummy} (Just lead) =
-  lead `notElem` Hand.knownCards (defender ++ dummy)
+  lead `notElem` Unknown.knowns (defender ++ dummy)
 isUniqueLead SingleDummy {north, south} (Just lead) =
-  lead `notElem` Hand.knownCards (north ++ south)
+  lead `notElem` Unknown.knowns (north ++ south)
 isUniqueLead DoubleDummy {west} (Just lead) =
-  lead `elem` Hand.knownCards west
+  lead `elem` Unknown.knowns west
 isUniqueLead _ _ = True
 
 isUnknownLead :: Maybe Card -> Bool
 isUnknownLead Nothing = False
-isUnknownLead (Just card) = Card.isUnknown card
+isUnknownLead (Just card) = Unknown.isUnknown card
 
 validateLead :: Layout -> Maybe Card -> Either String ()
 validateLead layout lead = do

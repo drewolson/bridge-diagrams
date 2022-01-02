@@ -5,7 +5,6 @@ module Bridge.Data.Card
     honors,
     suitHonors,
     isHonor,
-    isUnknown,
   )
 where
 
@@ -13,6 +12,7 @@ import Bridge.Data.Rank (Rank)
 import Bridge.Data.Rank qualified as Rank
 import Bridge.Data.Suit (Suit)
 import Bridge.Data.Suit qualified as Suit
+import Bridge.Data.Unknown (Unknown (..))
 
 data Card = Card
   { suit :: Suit,
@@ -24,8 +24,9 @@ instance Show Card where
   show :: Card -> String
   show Card {suit, rank} = show suit <> show rank
 
-isUnknown :: Card -> Bool
-isUnknown = Rank.isUnknown . rank
+instance Unknown Card where
+  isUnknown :: Card -> Bool
+  isUnknown = isUnknown . rank
 
 isHonor :: Card -> Bool
 isHonor = Rank.isHonor . rank

@@ -3,9 +3,10 @@ module Bridge.Data.Rank
     enumerate,
     honors,
     isHonor,
-    isUnknown,
   )
 where
+
+import Bridge.Data.Unknown (Unknown (..))
 
 data Rank
   = Ace
@@ -42,8 +43,9 @@ instance Show Rank where
     Two -> "2"
     Unknown -> "x"
 
-isUnknown :: Rank -> Bool
-isUnknown = (== Unknown)
+instance Unknown Rank where
+  isUnknown :: Rank -> Bool
+  isUnknown = (== Unknown)
 
 enumerate :: [Rank]
 enumerate = [Ace .. Two]

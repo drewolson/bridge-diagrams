@@ -23,6 +23,7 @@ library
       Bridge.Data.Rank
       Bridge.Data.Scoring
       Bridge.Data.Suit
+      Bridge.Data.Unknown
       Bridge.Data.Vul
       Bridge.IO.Buffering
       Bridge.Text.Formatter
@@ -73,6 +74,7 @@ test-suite bridge-diagrams-core-test
   other-modules:
       Bridge.Data.CardSpec
       Bridge.Data.LayoutSpec
+      Bridge.Data.UnknownSpec
       Bridge.Text.FormatterSpec
       Bridge.Text.ParserSpec
       Paths_bridge_diagrams_core

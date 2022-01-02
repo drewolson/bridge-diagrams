@@ -31,7 +31,7 @@ spec = parallel do
               [Ace, King, Unknown, Unknown, Unknown]
               [Ace, Ten, Unknown]
 
-      result `shouldBe` Left "Suit combination ranks must be unique"
+      result `shouldBe` Left "Suit combination has duplicate ranks: A"
 
     it "does not allow more than 13 cards" do
       let result =
