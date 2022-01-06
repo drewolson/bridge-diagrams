@@ -1,7 +1,14 @@
-format:
-	stack exec -- ormolu -o '-XImportQualifiedPost' -o '-XPatternSynonyms' --mode inplace $(shell git ls-files '*.hs')
+list-files = git ls-files '*.hs'
 
-format-check:
-	stack exec -- ormolu -o '-XImportQualifiedPost' -o '-XPatternSynonyms' --mode check $(shell git ls-files '*.hs')
+ormolu = stack exec -- ormolu -o '-XImportQualifiedPost' -o '-XPatternSynonyms'
 
-.PHONY: format format-check
+build:
+	stack build
+
+format: build
+	$(ormolu) --mode inplace $(shell $(list-files))
+
+format-check: build
+	$(ormolu) --mode check $(shell $(list-files))
+
+.PHONY: build format format-check
