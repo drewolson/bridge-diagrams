@@ -1,4 +1,4 @@
-list-files = git ls-files '*.hs'
+list-files = find . -name '*.hs' | grep -v '.stack-work'
 
 ormolu = stack exec -- ormolu -o '-XImportQualifiedPost' -o '-XPatternSynonyms'
 
