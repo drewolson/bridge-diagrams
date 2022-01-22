@@ -27,20 +27,20 @@ import Discord.Requests
 import Discord.Types
   ( Channel (channelId),
     Event (MessageCreate),
-    Message (messageAuthor, messageChannel, messageId, messageText),
+    Message (messageAuthor, messageChannelId, messageContent, messageId),
     User (userId, userIsBot, userName),
   )
 import System.Environment (getEnv)
 
 pattern BridgeHelp :: Message
-pattern BridgeHelp <- (strip . messageText -> "!bridge help")
+pattern BridgeHelp <- (strip . messageContent -> "!bridge help")
 
 pattern BridgeCommand :: Text -> Message
-pattern BridgeCommand a <- (stripPrefix "!bridge" . strip . messageText -> Just a)
+pattern BridgeCommand a <- (stripPrefix "!bridge" . strip . messageContent -> Just a)
 
 deleteMessage :: Message -> DiscordHandler ()
 deleteMessage m =
-  void $ restCall $ DeleteMessage (messageChannel m, messageId m)
+  void $ restCall $ DeleteMessage (messageChannelId m, messageId m)
 
 withDm :: Message -> (Channel -> DiscordHandler ()) -> DiscordHandler ()
 withDm m cb = do
@@ -79,7 +79,7 @@ commandHandler m input = do
     Right diagram -> do
       let name = userName $ messageAuthor m
       let response = "@" <> name <> ":\n" <> diagram
-      void $ restCall $ CreateMessage (messageChannel m) response
+      void $ restCall $ CreateMessage (messageChannelId m) response
 
 eventHandler :: Event -> DiscordHandler ()
 eventHandler = \case

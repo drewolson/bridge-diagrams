@@ -7,7 +7,7 @@ packages:
 - bridge-diagrams-slack
 
 extra-deps:
-- discord-haskell-1.10.0
+- discord-haskell-1.11.0
 - emoji-0.1.0.2
 
 allow-different-user: true
