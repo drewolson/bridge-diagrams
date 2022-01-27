@@ -9,7 +9,9 @@ import Bridge.Text.Help qualified as Help
 import Bridge.Text.Parser qualified as Parser
 import Control.Monad (void)
 import Data.Either.Combinators (mapBoth)
+import Data.Foldable (traverse_)
 import Data.Text (Text, pack, strip, stripPrefix)
+import Data.Text qualified as Text
 import Data.Text.IO qualified as Text.IO
 import Discord
   ( DiscordHandler,
@@ -59,13 +61,29 @@ processInput =
     . fmap Formatter.format
     . Parser.parse
 
+splitToSize :: Text -> [Text]
+splitToSize = go [] . Text.lines
+  where
+    maxMessageSize :: Int
+    maxMessageSize = 2000
+
+    go :: [Text] -> [Text] -> [Text]
+    go [] [] = []
+    go acc [] = reverse acc
+    go [] (h : t) = go [h] t
+    go (curr : rest) (h : t) =
+      let new = curr <> "\n" <> h
+       in if Text.length new < maxMessageSize
+            then go (new : rest) t
+            else go (h : curr : rest) t
+
 helpHandler :: Message -> DiscordHandler ()
 helpHandler m = do
   deleteMessage m
 
   withDm m \channel -> do
-    let help = Formatter.codeBlock Help.helpText
-    void $ restCall $ CreateMessage (channelId channel) help
+    let messages = Formatter.codeBlock <$> splitToSize Help.helpText
+    traverse_ (restCall . CreateMessage (channelId channel)) messages
 
 commandHandler :: Message -> Text -> DiscordHandler ()
 commandHandler m input = do
