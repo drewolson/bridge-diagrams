@@ -67,15 +67,16 @@ splitToSize = go [] . Text.lines
     maxMessageSize :: Int
     maxMessageSize = 2000
 
-    go :: [Text] -> [Text] -> [Text]
+    go :: [[Text]] -> [Text] -> [Text]
     go [] [] = []
-    go acc [] = reverse acc
-    go [] (h : t) = go [h] t
-    go (curr : rest) (h : t) =
-      let new = curr <> "\n" <> h
-       in if Text.length new < maxMessageSize
+    go acc [] = reverse $ fmap (Text.unlines . reverse) acc
+    go [] (h : t) = go [[h]] t
+    go acc@(curr : rest) (h : t) =
+      let new = h : curr
+          len = sum (fmap Text.length new) + length new - 1
+       in if len < maxMessageSize
             then go (new : rest) t
-            else go (h : curr : rest) t
+            else go ([h] : acc) t
 
 helpHandler :: Message -> DiscordHandler ()
 helpHandler m = do
