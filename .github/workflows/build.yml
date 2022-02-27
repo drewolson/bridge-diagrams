@@ -23,11 +23,11 @@ jobs:
       - name: Permissions bug workaround
         run: "chown -R $(id -un):$(id -gn) ~"
       - name: Build
-        run: stack build --ghc-options=-O2
+        run: stack --allow-different-user build --ghc-options=-O2
       - name: Check Formatting
         run: make format-check
       - name: Test
-        run: stack test --ghc-options=-O2
+        run: stack --allow-different-user test --ghc-options=-O2
       - name: Make Artifacts Directory
         run: mkdir artifacts
       - name: Copy CLI Artifact
