@@ -5,7 +5,7 @@ on:
   - pull_request
 
 env:
-  STACK_ENV=CI
+  STACK_ENV: CI
 
 jobs:
   build:
