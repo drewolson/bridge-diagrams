@@ -4,18 +4,12 @@ module Bridge.Slack.Main
 where
 
 import Bridge.IO.Buffering qualified as Buffering
-import Bridge.Slack.Types
-  ( ConnectionData (..),
-    Event (..),
-    Message (..),
-    PostMessage (..),
-    SlashCommand (..),
-    ackFromEvent,
-    errorAck,
-    postMessageFromSlashCommand,
-    pattern BridgeCommand,
-    pattern BridgeHelpCommand,
-  )
+import Bridge.Slack.Data.Ack (ackFromEvent, errorAck)
+import Bridge.Slack.Data.ConnectionData (ConnectionData (..))
+import Bridge.Slack.Data.Event (Event (..), pattern BridgeCommand, pattern BridgeHelpCommand)
+import Bridge.Slack.Data.Message (Message (..))
+import Bridge.Slack.Data.PostMessage (PostMessage (..), postMessageFromSlashCommand)
+import Bridge.Slack.Data.SlashCommand (SlashCommand (..))
 import Bridge.Text.Formatter qualified as Formatter
 import Bridge.Text.Help qualified as Help
 import Bridge.Text.Parser qualified as Parser

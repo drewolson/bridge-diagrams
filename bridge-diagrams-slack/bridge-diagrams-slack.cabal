@@ -15,8 +15,15 @@ build-type:     Simple
 
 library
   exposed-modules:
+      Bridge.Slack.Data.Ack
+      Bridge.Slack.Data.AckPayload
+      Bridge.Slack.Data.ConnectionData
+      Bridge.Slack.Data.Event
+      Bridge.Slack.Data.EventPayload
+      Bridge.Slack.Data.Message
+      Bridge.Slack.Data.PostMessage
+      Bridge.Slack.Data.SlashCommand
       Bridge.Slack.Main
-      Bridge.Slack.Types
   other-modules:
       Paths_bridge_diagrams_slack
   hs-source-dirs:
