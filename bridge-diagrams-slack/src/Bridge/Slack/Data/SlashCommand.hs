@@ -3,15 +3,10 @@ module Bridge.Slack.Data.SlashCommand
   )
 where
 
-import Data.Aeson
-  ( FromJSON (parseJSON),
-    Options (fieldLabelModifier),
-    defaultOptions,
-    genericParseJSON,
-  )
+import Bridge.Slack.Data.Json (SnakeCaseJson (..))
+import Data.Aeson (FromJSON (..))
 import Data.Text (Text)
 import GHC.Generics (Generic)
-import Text.Casing (quietSnake)
 
 data SlashCommand = SlashCommand
   { slashCommandCommand :: Text,
@@ -20,10 +15,4 @@ data SlashCommand = SlashCommand
     slashCommandChannelId :: Text
   }
   deriving (Eq, Show, Generic)
-
-instance FromJSON SlashCommand where
-  parseJSON =
-    genericParseJSON $
-      defaultOptions
-        { fieldLabelModifier = quietSnake . drop 12
-        }
+  deriving (FromJSON) via (SnakeCaseJson 12 SlashCommand)

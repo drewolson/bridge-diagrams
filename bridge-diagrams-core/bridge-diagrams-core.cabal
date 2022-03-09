@@ -39,6 +39,7 @@ library
       DeriveAnyClass
       DeriveGeneric
       DerivingStrategies
+      DerivingVia
       FlexibleContexts
       FlexibleInstances
       GeneralizedNewtypeDeriving
@@ -55,6 +56,7 @@ library
       TypeApplications
       TypeFamilies
       TypeOperators
+      UndecidableInstances
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-tool-depends:
@@ -86,6 +88,7 @@ test-suite bridge-diagrams-core-test
       DeriveAnyClass
       DeriveGeneric
       DerivingStrategies
+      DerivingVia
       FlexibleContexts
       FlexibleInstances
       GeneralizedNewtypeDeriving
@@ -102,6 +105,7 @@ test-suite bridge-diagrams-core-test
       TypeApplications
       TypeFamilies
       TypeOperators
+      UndecidableInstances
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-tool-depends:

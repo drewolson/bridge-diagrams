@@ -7,31 +7,17 @@ where
 
 import Bridge.Slack.Data.AckPayload (AckPayload (..))
 import Bridge.Slack.Data.Event (Event (..))
-import Data.Aeson
-  ( Options (fieldLabelModifier, omitNothingFields),
-    ToJSON (toJSON),
-    Value,
-    defaultOptions,
-    genericToJSON,
-  )
+import Bridge.Slack.Data.Json (SnakeCaseJson (..))
+import Data.Aeson (ToJSON (..))
 import Data.Text (Text)
 import GHC.Generics (Generic)
-import Text.Casing (quietSnake)
 
 data Ack = Ack
   { ackEnvelopeId :: Text,
     ackPayload :: Maybe AckPayload
   }
   deriving (Eq, Show, Generic)
-
-instance ToJSON Ack where
-  toJSON :: Ack -> Value
-  toJSON =
-    genericToJSON $
-      defaultOptions
-        { omitNothingFields = True,
-          fieldLabelModifier = quietSnake . drop 3
-        }
+  deriving (ToJSON) via (SnakeCaseJson 3 Ack)
 
 ackFromEvent :: Event -> Ack
 ackFromEvent Event {eventEnvelopeId} =

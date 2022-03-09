@@ -4,17 +4,11 @@ module Bridge.Slack.Data.PostMessage
   )
 where
 
+import Bridge.Slack.Data.Json (SnakeCaseJson (..))
 import Bridge.Slack.Data.SlashCommand (SlashCommand (..))
-import Data.Aeson
-  ( Options (fieldLabelModifier),
-    ToJSON (toJSON),
-    Value,
-    defaultOptions,
-    genericToJSON,
-  )
+import Data.Aeson (ToJSON (..))
 import Data.Text (Text)
 import GHC.Generics (Generic)
-import Text.Casing (quietSnake)
 
 data PostMessage = PostMessage
   { postMessageChannel :: Text,
@@ -23,14 +17,7 @@ data PostMessage = PostMessage
     postMessageUsername :: Text
   }
   deriving (Eq, Show, Generic)
-
-instance ToJSON PostMessage where
-  toJSON :: PostMessage -> Value
-  toJSON =
-    genericToJSON $
-      defaultOptions
-        { fieldLabelModifier = quietSnake . drop 11
-        }
+  deriving (ToJSON) via (SnakeCaseJson 11 PostMessage)
 
 postMessageFromSlashCommand :: Text -> SlashCommand -> PostMessage
 postMessageFromSlashCommand text SlashCommand {slashCommandUserName, slashCommandChannelId} =

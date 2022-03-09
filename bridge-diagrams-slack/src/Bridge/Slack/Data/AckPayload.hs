@@ -3,16 +3,10 @@ module Bridge.Slack.Data.AckPayload
   )
 where
 
-import Data.Aeson
-  ( Options (fieldLabelModifier, omitNothingFields),
-    ToJSON (toJSON),
-    Value,
-    defaultOptions,
-    genericToJSON,
-  )
+import Bridge.Slack.Data.Json (SnakeCaseJson (..))
+import Data.Aeson (ToJSON)
 import Data.Text (Text)
 import GHC.Generics (Generic)
-import Text.Casing (quietSnake)
 
 data AckPayload = AckPayload
   { ackPayloadResponseType :: Text,
@@ -20,12 +14,4 @@ data AckPayload = AckPayload
     ackPayloadReplaceOriginal :: Maybe Bool
   }
   deriving (Eq, Show, Generic)
-
-instance ToJSON AckPayload where
-  toJSON :: AckPayload -> Value
-  toJSON =
-    genericToJSON $
-      defaultOptions
-        { omitNothingFields = True,
-          fieldLabelModifier = quietSnake . drop 10
-        }
+  deriving (ToJSON) via (SnakeCaseJson 10 AckPayload)

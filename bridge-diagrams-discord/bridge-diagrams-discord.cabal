@@ -26,6 +26,7 @@ library
       DeriveAnyClass
       DeriveGeneric
       DerivingStrategies
+      DerivingVia
       FlexibleContexts
       FlexibleInstances
       GeneralizedNewtypeDeriving
@@ -42,6 +43,7 @@ library
       TypeApplications
       TypeFamilies
       TypeOperators
+      UndecidableInstances
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-tool-depends:
@@ -64,6 +66,7 @@ executable bridge-discord-exe
       DeriveAnyClass
       DeriveGeneric
       DerivingStrategies
+      DerivingVia
       FlexibleContexts
       FlexibleInstances
       GeneralizedNewtypeDeriving
@@ -80,6 +83,7 @@ executable bridge-discord-exe
       TypeApplications
       TypeFamilies
       TypeOperators
+      UndecidableInstances
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-tool-depends:

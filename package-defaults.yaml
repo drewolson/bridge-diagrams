@@ -13,6 +13,7 @@ default-extensions:
 - DeriveAnyClass
 - DeriveGeneric
 - DerivingStrategies
+- DerivingVia
 - FlexibleContexts
 - FlexibleInstances
 - GeneralizedNewtypeDeriving
@@ -29,6 +30,7 @@ default-extensions:
 - TypeApplications
 - TypeFamilies
 - TypeOperators
+- UndecidableInstances
 - ViewPatterns
 
 build-tools:
