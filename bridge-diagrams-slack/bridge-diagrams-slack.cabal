@@ -20,10 +20,10 @@ library
       Bridge.Slack.Data.ConnectionData
       Bridge.Slack.Data.Event
       Bridge.Slack.Data.EventPayload
-      Bridge.Slack.Data.Json
       Bridge.Slack.Data.Message
       Bridge.Slack.Data.PostMessage
       Bridge.Slack.Data.SlashCommand
+      Bridge.Slack.Json
       Bridge.Slack.Main
   other-modules:
       Paths_bridge_diagrams_slack

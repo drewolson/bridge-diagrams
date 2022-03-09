@@ -7,7 +7,7 @@ where
 
 import Bridge.Slack.Data.AckPayload (AckPayload (..))
 import Bridge.Slack.Data.Event (Event (..))
-import Bridge.Slack.Data.Json (SnakeCaseJson (..))
+import Bridge.Slack.Json (SnakeCaseJson (..))
 import Data.Aeson (ToJSON (..))
 import Data.Text (Text)
 import GHC.Generics (Generic)

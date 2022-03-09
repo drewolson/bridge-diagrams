@@ -4,8 +4,8 @@ module Bridge.Slack.Data.PostMessage
   )
 where
 
-import Bridge.Slack.Data.Json (SnakeCaseJson (..))
 import Bridge.Slack.Data.SlashCommand (SlashCommand (..))
+import Bridge.Slack.Json (SnakeCaseJson (..))
 import Data.Aeson (ToJSON (..))
 import Data.Text (Text)
 import GHC.Generics (Generic)

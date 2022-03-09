@@ -1,4 +1,4 @@
-module Bridge.Slack.Data.Json
+module Bridge.Slack.Json
   ( SnakeCaseJson (..),
   )
 where

@@ -3,7 +3,7 @@ module Bridge.Slack.Data.SlashCommand
   )
 where
 
-import Bridge.Slack.Data.Json (SnakeCaseJson (..))
+import Bridge.Slack.Json (SnakeCaseJson (..))
 import Data.Aeson (FromJSON (..))
 import Data.Text (Text)
 import GHC.Generics (Generic)
