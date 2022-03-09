@@ -8,7 +8,7 @@ else
 build-options =
 endif
 
-ormolu = $(stack) exec -- ormolu -o '-XImportQualifiedPost' -o '-XPatternSynonyms'
+ormolu = $(stack) exec -- ormolu -o '-XImportQualifiedPost' -o '-XPatternSynonyms' -o '-XTypeApplications'
 
 build:
 	$(stack) build $(build-options)
