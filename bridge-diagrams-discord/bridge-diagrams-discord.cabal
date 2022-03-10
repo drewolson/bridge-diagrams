@@ -21,6 +21,7 @@ library
   hs-source-dirs:
       src
   default-extensions:
+      AllowAmbiguousTypes
       BlockArguments
       DataKinds
       DeriveAnyClass
@@ -61,6 +62,7 @@ executable bridge-discord-exe
   hs-source-dirs:
       app
   default-extensions:
+      AllowAmbiguousTypes
       BlockArguments
       DataKinds
       DeriveAnyClass

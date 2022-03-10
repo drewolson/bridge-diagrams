@@ -5,7 +5,7 @@ module Bridge.Slack.Data.PostMessage
 where
 
 import Bridge.Slack.Data.SlashCommand (SlashCommand (..))
-import Bridge.Slack.Json (SnakeCaseJson (..))
+import Bridge.Slack.Json (PrefixedSnakeCaseJson (..))
 import Data.Aeson (ToJSON (..))
 import Data.Text (Text)
 import GHC.Generics (Generic)
@@ -17,7 +17,7 @@ data PostMessage = PostMessage
     postMessageUsername :: Text
   }
   deriving (Eq, Show, Generic)
-  deriving (ToJSON) via (SnakeCaseJson 11 PostMessage)
+  deriving (ToJSON) via (PrefixedSnakeCaseJson PostMessage)
 
 postMessageFromSlashCommand :: Text -> SlashCommand -> PostMessage
 postMessageFromSlashCommand text SlashCommand {slashCommandUserName, slashCommandChannelId} =

@@ -3,7 +3,7 @@ module Bridge.Slack.Data.AckPayload
   )
 where
 
-import Bridge.Slack.Json (SnakeCaseJson (..))
+import Bridge.Slack.Json (PrefixedSnakeCaseJson (..))
 import Data.Aeson (ToJSON)
 import Data.Text (Text)
 import GHC.Generics (Generic)
@@ -14,4 +14,4 @@ data AckPayload = AckPayload
     ackPayloadReplaceOriginal :: Maybe Bool
   }
   deriving (Eq, Show, Generic)
-  deriving (ToJSON) via (SnakeCaseJson 10 AckPayload)
+  deriving (ToJSON) via (PrefixedSnakeCaseJson AckPayload)

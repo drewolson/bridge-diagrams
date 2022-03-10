@@ -1,5 +1,5 @@
 module Bridge.Slack.Json
-  ( SnakeCaseJson (..),
+  ( PrefixedSnakeCaseJson (..),
   )
 where
 
@@ -15,33 +15,32 @@ import Data.Aeson
     genericParseJSON,
     genericToJSON,
   )
-import Data.Data (Proxy (Proxy))
+import Data.Data (Typeable, typeOf)
 import GHC.Generics (Generic (..))
-import GHC.TypeLits (KnownNat, Nat, natVal)
 import Text.Casing (quietSnake)
 
-newtype SnakeCaseJson (l :: Nat) a = SnakeCaseJson a
+newtype PrefixedSnakeCaseJson a = PrefixedSnakeCaseJson a
 
 instance
-  ( KnownNat l,
-    Generic a,
+  ( Generic a,
+    Typeable a,
     GToJSON' Value Zero (Rep a)
   ) =>
-  ToJSON (SnakeCaseJson l a)
+  ToJSON (PrefixedSnakeCaseJson a)
   where
-  toJSON (SnakeCaseJson a) = genericToJSON (snakeCaseOptions $ natToInt @l Proxy) a
+  toJSON (PrefixedSnakeCaseJson a) = genericToJSON (snakeCaseOptions $ typeNameSize @a) a
 
 instance
-  ( KnownNat l,
-    Generic a,
+  ( Generic a,
+    Typeable a,
     GFromJSON Zero (Rep a)
   ) =>
-  FromJSON (SnakeCaseJson l a)
+  FromJSON (PrefixedSnakeCaseJson a)
   where
-  parseJSON = fmap SnakeCaseJson . genericParseJSON (snakeCaseOptions $ natToInt @l Proxy)
+  parseJSON = fmap PrefixedSnakeCaseJson . genericParseJSON (snakeCaseOptions $ typeNameSize @a)
 
-natToInt :: forall n proxy. KnownNat n => proxy n -> Int
-natToInt proxy = fromIntegral $ natVal @n proxy
+typeNameSize :: forall a. Typeable a => Int
+typeNameSize = length $ show $ typeOf @a undefined
 
 snakeCaseOptions :: Int -> Options
 snakeCaseOptions prefixSize =

@@ -21,6 +21,7 @@ library
   hs-source-dirs:
       src
   default-extensions:
+      AllowAmbiguousTypes
       BlockArguments
       DataKinds
       DeriveAnyClass
@@ -59,6 +60,7 @@ executable bridge-cli-exe
   hs-source-dirs:
       app
   default-extensions:
+      AllowAmbiguousTypes
       BlockArguments
       DataKinds
       DeriveAnyClass

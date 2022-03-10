@@ -7,7 +7,7 @@ where
 
 import Bridge.Slack.Data.AckPayload (AckPayload (..))
 import Bridge.Slack.Data.Event (Event (..))
-import Bridge.Slack.Json (SnakeCaseJson (..))
+import Bridge.Slack.Json (PrefixedSnakeCaseJson (..))
 import Data.Aeson (ToJSON (..))
 import Data.Text (Text)
 import GHC.Generics (Generic)
@@ -17,7 +17,7 @@ data Ack = Ack
     ackPayload :: Maybe AckPayload
   }
   deriving (Eq, Show, Generic)
-  deriving (ToJSON) via (SnakeCaseJson 3 Ack)
+  deriving (ToJSON) via (PrefixedSnakeCaseJson Ack)
 
 ackFromEvent :: Event -> Ack
 ackFromEvent Event {eventEnvelopeId} =

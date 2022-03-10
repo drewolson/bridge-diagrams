@@ -3,7 +3,7 @@ module Bridge.Slack.Data.ConnectionData
   )
 where
 
-import Bridge.Slack.Json (SnakeCaseJson (..))
+import Bridge.Slack.Json (PrefixedSnakeCaseJson (..))
 import Data.Aeson (FromJSON (..))
 import Data.Text (Text)
 import GHC.Generics (Generic)
@@ -13,4 +13,4 @@ data ConnectionData = ConnectionData
     connectionDataUrl :: Text
   }
   deriving (Eq, Show, Generic)
-  deriving (FromJSON) via (SnakeCaseJson 14 ConnectionData)
+  deriving (FromJSON) via (PrefixedSnakeCaseJson ConnectionData)

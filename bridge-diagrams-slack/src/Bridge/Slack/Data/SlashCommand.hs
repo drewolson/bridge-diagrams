@@ -3,7 +3,7 @@ module Bridge.Slack.Data.SlashCommand
   )
 where
 
-import Bridge.Slack.Json (SnakeCaseJson (..))
+import Bridge.Slack.Json (PrefixedSnakeCaseJson (..))
 import Data.Aeson (FromJSON (..))
 import Data.Text (Text)
 import GHC.Generics (Generic)
@@ -15,4 +15,4 @@ data SlashCommand = SlashCommand
     slashCommandChannelId :: Text
   }
   deriving (Eq, Show, Generic)
-  deriving (FromJSON) via (SnakeCaseJson 12 SlashCommand)
+  deriving (FromJSON) via (PrefixedSnakeCaseJson SlashCommand)
