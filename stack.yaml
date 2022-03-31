@@ -1,4 +1,4 @@
-resolver: lts-18.27
+resolver: lts-19.1
 
 packages:
 - bridge-diagrams-cli
@@ -7,5 +7,5 @@ packages:
 - bridge-diagrams-slack
 
 extra-deps:
-- discord-haskell-1.12.4
+- discord-haskell-1.12.5
 - emoji-0.1.0.2
