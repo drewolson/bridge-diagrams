@@ -14,12 +14,12 @@ import Data.Text qualified as Text
 
 formatError :: Text -> Text -> Text
 formatError input err =
-  let body = "Error processing message: " <> input <> "\n" <> err
+  let body = "Error processing message: " <> input <> "\n\n" <> err
    in Formatter.codeBlock body
 
 formatDiagram :: Diagram -> Text
 formatDiagram diagram =
-  let output = Formatter.format diagram
+  let output = Formatter.codeBlock $ Formatter.format diagram
    in if Diagram.spoiler diagram
         then "||" <> output <> "||"
         else output
