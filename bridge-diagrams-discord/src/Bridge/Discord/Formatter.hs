@@ -6,7 +6,6 @@ module Bridge.Discord.Formatter
 where
 
 import Bridge.Data.Diagram (Diagram)
-import Bridge.Data.Diagram qualified as Diagram
 import Bridge.Text.Formatter qualified as Formatter
 import Bridge.Text.Help qualified as Help
 import Data.Text (Text)
@@ -18,11 +17,7 @@ formatError input err =
    in Formatter.codeBlock body
 
 formatDiagram :: Diagram -> Text
-formatDiagram diagram =
-  let output = Formatter.codeBlock $ Formatter.format diagram
-   in if Diagram.spoiler diagram
-        then "||" <> output <> "||"
-        else output
+formatDiagram = Formatter.codeBlock . Formatter.format
 
 formattedHelpText :: [Text]
 formattedHelpText = Formatter.codeBlock <$> splitToSize Help.helpText

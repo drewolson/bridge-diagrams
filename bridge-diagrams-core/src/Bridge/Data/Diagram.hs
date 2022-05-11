@@ -16,8 +16,7 @@ data Diagram = Diagram
   { layout :: Layout,
     vul :: Maybe Vul,
     scoring :: Maybe Scoring,
-    lead :: Maybe Card,
-    spoiler :: Bool
+    lead :: Maybe Card
   }
   deriving (Eq, Show)
 
@@ -44,8 +43,8 @@ validateLead layout lead = do
   when (isUnknownLead lead) do
     Left "Opening lead cannot be an unknown spot card"
 
-new :: Layout -> Maybe Vul -> Maybe Scoring -> Maybe Card -> Bool -> Either String Diagram
-new layout vul scoring lead spoiler = do
+new :: Layout -> Maybe Vul -> Maybe Scoring -> Maybe Card -> Either String Diagram
+new layout vul scoring lead = do
   validateLead layout lead
 
-  pure $ Diagram {layout, vul, scoring, lead, spoiler}
+  pure $ Diagram {layout, vul, scoring, lead}
