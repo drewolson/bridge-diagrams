@@ -34,7 +34,8 @@ spec = parallel do
                       },
                   vul = Nothing,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  spoiler = False
                 }
 
       let expected =
@@ -70,7 +71,8 @@ QTx
                       },
                   vul = Nothing,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  spoiler = False
                 }
 
       let expected =
@@ -152,7 +154,8 @@ QTx
                       },
                   vul = Nothing,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  spoiler = False
                 }
 
       let expected =
@@ -243,7 +246,8 @@ QTx
                       },
                   vul = Just RR,
                   lead = Just $ Card Clubs Ten,
-                  scoring = Just Imps
+                  scoring = Just Imps,
+                  spoiler = False
                 }
 
       let expected =
@@ -304,7 +308,8 @@ Lead: ♣T   ♠Jx
                       },
                   vul = Nothing,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  spoiler = False
                 }
 
       let expected =
@@ -361,7 +366,8 @@ Lead: ♣T   ♠Jx
                       },
                   vul = Just RR,
                   lead = Just $ Card Diamonds Four,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  spoiler = False
                 }
 
       let expected =
@@ -419,7 +425,8 @@ Lead: ♦4
                       },
                   vul = Nothing,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  spoiler = False
                 }
 
       let expected =
@@ -477,7 +484,8 @@ Lead: ♦4
                       },
                   vul = Just RR,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  spoiler = False
                 }
 
       let expected =
@@ -535,7 +543,8 @@ Vul: R/R   ♠AKxxx
                       },
                   vul = Nothing,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  spoiler = False
                 }
 
       let expected =
@@ -593,7 +602,8 @@ Vul: R/R   ♠AKxxx
                       },
                   vul = Just RR,
                   lead = Just $ Card Diamonds Four,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  spoiler = False
                 }
 
       let expected =
@@ -651,7 +661,8 @@ Lead: ♦4    -----     ♠Qxx
                       },
                   vul = Just RR,
                   lead = Just $ Card Diamonds Four,
-                  scoring = Just Imps
+                  scoring = Just Imps,
+                  spoiler = False
                 }
 
       let expected =

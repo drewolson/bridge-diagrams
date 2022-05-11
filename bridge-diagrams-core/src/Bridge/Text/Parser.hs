@@ -119,18 +119,22 @@ parseScoring =
       Bam <$ string' "bam"
     ]
 
+parseSpoiler :: Parser Bool
+parseSpoiler = True <$ string' "spoiler"
+
 parseDiagram :: Parser Diagram
 parseDiagram = do
-  (layout, vul, scoring, lead) <-
+  (layout, vul, scoring, lead, spoiler) <-
     intercalateEffect (space *> char ',' <* space) $
-      (,,,) <$> toPermutation parseLayout
-        <*> toPermutationWithDefault Nothing (Just <$> parseVul)
-        <*> toPermutationWithDefault Nothing (Just <$> parseScoring)
-        <*> toPermutationWithDefault Nothing (Just <$> parseCard)
+      (,,,,) <$> toPermutation (try parseLayout)
+        <*> toPermutationWithDefault Nothing (Just <$> try parseVul)
+        <*> toPermutationWithDefault Nothing (Just <$> try parseScoring)
+        <*> toPermutationWithDefault Nothing (Just <$> try parseCard)
+        <*> toPermutationWithDefault False (try parseSpoiler)
 
   eof
 
-  rightOrFail $ Diagram.new layout vul scoring lead
+  rightOrFail $ Diagram.new layout vul scoring lead spoiler
 
 parse :: Text -> Either Text Diagram
 parse = first (pack . errorBundlePretty) . runParser parseDiagram "" . strip

@@ -31,7 +31,25 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                spoiler = False
+              }
+
+      result `shouldBe` Right expected
+
+    it "parses spoilers" do
+      let result = Parser.parse "akxxx | qtx, spoiler"
+      let expected =
+            Diagram
+              { layout =
+                  SuitCombination
+                    { top = [Ace, King, Unknown, Unknown, Unknown],
+                      bottom = [Queen, Ten, Unknown]
+                    },
+                vul = Nothing,
+                lead = Nothing,
+                scoring = Nothing,
+                spoiler = True
               }
 
       result `shouldBe` Right expected
@@ -60,7 +78,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                spoiler = False
               }
 
       result `shouldBe` Right expected
@@ -81,7 +100,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                spoiler = False
               }
 
       result `shouldBe` Right expected
@@ -102,7 +122,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                spoiler = False
               }
 
       result `shouldBe` Right expected
@@ -176,7 +197,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                spoiler = False
               }
 
       result `shouldBe` Right expected
@@ -250,7 +272,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                spoiler = False
               }
 
       result `shouldBe` Right expected
@@ -300,7 +323,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                spoiler = False
               }
 
       result `shouldBe` Right expected
@@ -344,7 +368,8 @@ spec = parallel do
                     },
                 vul = Just RW,
                 lead = Just (Card Diamonds Four),
-                scoring = Just Imps
+                scoring = Just Imps,
+                spoiler = False
               }
 
       result `shouldBe` Right expected
@@ -399,7 +424,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                spoiler = False
               }
 
       result `shouldBe` Right expected
@@ -444,7 +470,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                spoiler = False
               }
 
       result `shouldBe` Right expected

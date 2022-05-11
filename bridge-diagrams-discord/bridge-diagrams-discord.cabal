@@ -15,6 +15,7 @@ build-type:     Simple
 
 library
   exposed-modules:
+      Bridge.Discord.Formatter
       Bridge.Discord.Main
   other-modules:
       Paths_bridge_diagrams_discord

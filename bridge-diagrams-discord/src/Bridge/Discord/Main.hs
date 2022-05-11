@@ -3,15 +3,13 @@ module Bridge.Discord.Main
   )
 where
 
+import Bridge.Discord.Formatter qualified as Formatter
 import Bridge.IO.Buffering qualified as Buffering
-import Bridge.Text.Formatter qualified as Formatter
-import Bridge.Text.Help qualified as Help
 import Bridge.Text.Parser qualified as Parser
 import Control.Monad (void)
 import Data.Either.Combinators (mapBoth)
 import Data.Foldable (traverse_)
 import Data.Text (Text, pack, strip, stripPrefix)
-import Data.Text qualified as Text
 import Data.Text.IO qualified as Text.IO
 import Discord
   ( DiscordHandler,
@@ -56,34 +54,16 @@ fromBot :: Message -> Bool
 fromBot = userIsBot . messageAuthor
 
 processInput :: Text -> Either Text Text
-processInput =
-  mapBoth Formatter.codeBlock Formatter.codeBlock
-    . fmap Formatter.format
-    . Parser.parse
-
-splitToSize :: Text -> [Text]
-splitToSize = go [] . Text.lines
-  where
-    maxMessageSize :: Int
-    maxMessageSize = 2000
-
-    go :: [[Text]] -> [Text] -> [Text]
-    go [] [] = []
-    go acc [] = reverse $ fmap (Text.unlines . reverse) acc
-    go [] (h : t) = go [[h]] t
-    go acc@(curr : rest) (h : t) =
-      let new = h : curr
-          len = sum (fmap Text.length new) + length new - 1
-       in if len < maxMessageSize
-            then go (new : rest) t
-            else go ([h] : acc) t
+processInput input =
+  mapBoth (Formatter.formatError input) Formatter.formatDiagram $
+    Parser.parse input
 
 helpHandler :: Message -> DiscordHandler ()
 helpHandler m = do
   deleteMessage m
 
   withDm m \channel -> do
-    let messages = Formatter.codeBlock <$> splitToSize Help.helpText
+    let messages = Formatter.formattedHelpText
     traverse_ (restCall . CreateMessage (channelId channel)) messages
 
 commandHandler :: Message -> Text -> DiscordHandler ()
@@ -91,13 +71,12 @@ commandHandler m input = do
   deleteMessage m
 
   case processInput input of
-    Left err ->
+    Left errMessage ->
       withDm m \channel -> do
-        let prefix = Formatter.codeBlock $ "Error processing message: " <> input
-        void $ restCall $ CreateMessage (channelId channel) (prefix <> err)
-    Right diagram -> do
+        void $ restCall $ CreateMessage (channelId channel) errMessage
+    Right diagramMessage -> do
       let name = userName $ messageAuthor m
-      let response = "@" <> name <> ":\n" <> diagram
+      let response = "@" <> name <> ":\n" <> diagramMessage
       void $ restCall $ CreateMessage (messageChannelId m) response
 
 eventHandler :: Event -> DiscordHandler ()
