@@ -95,6 +95,9 @@ handleBridgeCommand token conn event slashCommand@SlashCommand {slashCommandText
 loop :: Monad m => MaybeT m a -> m ()
 loop = void . runMaybeT . forever
 
+quit :: MonadPlus m => m ()
+quit = mzero
+
 handler :: String -> WS.ClientApp ()
 handler token conn = loop do
   msg <- receive conn
@@ -105,15 +108,15 @@ handler token conn = loop do
   case decode msg of
     Just HelloMessage ->
       pure ()
-    Just (EventMessage event@BridgeHelpCommand) -> do
+    Just (EventMessage event@BridgeHelpCommand) ->
       handleHelpCommand conn event
-    Just (EventMessage event@(BridgeCommand slashCommand)) -> do
+    Just (EventMessage event@(BridgeCommand slashCommand)) ->
       handleBridgeCommand token conn event slashCommand
-    Just (EventMessage event) -> do
+    Just (EventMessage event) ->
       ack conn event
     _ -> do
       sendClose conn
-      mzero
+      quit
 
 main :: IO ()
 main = do
