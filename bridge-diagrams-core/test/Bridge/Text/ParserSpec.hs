@@ -8,7 +8,8 @@ import Bridge.Data.Diagram (Diagram (..))
 import Bridge.Data.Layout (Layout (..))
 import Bridge.Data.Perspective (Perspective (..))
 import Bridge.Data.Rank (Rank (..))
-import Bridge.Data.Scoring (Scoring (Imps))
+import Bridge.Data.Scoring (Scoring (..))
+import Bridge.Data.Seat (Seat (..))
 import Bridge.Data.Suit (Suit (..))
 import Bridge.Data.Vul (Vul (..))
 import Bridge.Text.Parser qualified as Parser
@@ -31,7 +32,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                seat = Nothing
               }
 
       result `shouldBe` Right expected
@@ -60,7 +62,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                seat = Nothing
               }
 
       result `shouldBe` Right expected
@@ -81,7 +84,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                seat = Nothing
               }
 
       result `shouldBe` Right expected
@@ -102,7 +106,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                seat = Nothing
               }
 
       result `shouldBe` Right expected
@@ -176,7 +181,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                seat = Nothing
               }
 
       result `shouldBe` Right expected
@@ -250,7 +256,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                seat = Nothing
               }
 
       result `shouldBe` Right expected
@@ -300,13 +307,14 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                seat = Nothing
               }
 
       result `shouldBe` Right expected
 
-    it "parses a single dummy hand with vul, opening lead, and scoring" do
-      let result = Parser.parse "akxxx qxx jtx xx; jx jx akxxx qxxx, d4, r/w, imps"
+    it "parses a single dummy hand with seat, vul, opening lead, and scoring" do
+      let result = Parser.parse "1st, akxxx qxx jtx xx; jx jx akxxx qxxx, d4, r/w, imps"
       let expected =
             Diagram
               { layout =
@@ -344,7 +352,8 @@ spec = parallel do
                     },
                 vul = Just RW,
                 lead = Just (Card Diamonds Four),
-                scoring = Just Imps
+                scoring = Just Imps,
+                seat = Just First
               }
 
       result `shouldBe` Right expected
@@ -399,7 +408,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                seat = Nothing
               }
 
       result `shouldBe` Right expected
@@ -444,7 +454,8 @@ spec = parallel do
                     },
                 vul = Nothing,
                 lead = Nothing,
-                scoring = Nothing
+                scoring = Nothing,
+                seat = Nothing
               }
 
       result `shouldBe` Right expected

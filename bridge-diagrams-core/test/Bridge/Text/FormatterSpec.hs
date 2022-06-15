@@ -9,6 +9,7 @@ import Bridge.Data.Layout (Layout (..))
 import Bridge.Data.Perspective (Perspective (..))
 import Bridge.Data.Rank (Rank (..))
 import Bridge.Data.Scoring (Scoring (Imps))
+import Bridge.Data.Seat (Seat (..))
 import Bridge.Data.Suit (Suit (..))
 import Bridge.Data.Vul (Vul (..))
 import Bridge.Text.Formatter qualified as Formatter
@@ -34,7 +35,8 @@ spec = parallel do
                       },
                   vul = Nothing,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  seat = Nothing
                 }
 
       let expected =
@@ -70,7 +72,8 @@ QTx
                       },
                   vul = Nothing,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  seat = Nothing
                 }
 
       let expected =
@@ -152,7 +155,8 @@ QTx
                       },
                   vul = Nothing,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  seat = Nothing
                 }
 
       let expected =
@@ -174,7 +178,7 @@ QTx
 
       trimLines result `shouldBe` Text.drop 1 expected
 
-    it "formats a double-dummy hand with vul, scoring, and opening lead" do
+    it "formats a double-dummy hand with seat, vul, scoring, and opening lead" do
       let result =
             Formatter.format
               Diagram
@@ -243,14 +247,15 @@ QTx
                       },
                   vul = Just RR,
                   lead = Just $ Card Clubs Ten,
-                  scoring = Just Imps
+                  scoring = Just Imps,
+                  seat = Just First
                 }
 
       let expected =
             [r|
-Vul: R/R   ♠AKxxx
-IMPs       ♥Qxx
-           ♦JTx
+Seat: 1st  ♠AKxxx
+Vul:  R/R  ♥Qxx
+IMPs       ♦JTx
            ♣xx
 ♠xxx        -----     ♠Qxx
 ♥xxx       |  N  |    ♥AKxxx
@@ -304,7 +309,8 @@ Lead: ♣T   ♠Jx
                       },
                   vul = Nothing,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  seat = Nothing
                 }
 
       let expected =
@@ -361,12 +367,13 @@ Lead: ♣T   ♠Jx
                       },
                   vul = Just RR,
                   lead = Just $ Card Diamonds Four,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  seat = Nothing
                 }
 
       let expected =
             [r|
-Vul: R/R   ♠AKxxx
+Vul:  R/R  ♠AKxxx
            ♥Qxx
            ♦JTx
            ♣xx
@@ -419,7 +426,8 @@ Lead: ♦4
                       },
                   vul = Nothing,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  seat = Nothing
                 }
 
       let expected =
@@ -477,12 +485,13 @@ Lead: ♦4
                       },
                   vul = Just RR,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  seat = Nothing
                 }
 
       let expected =
             [r|
-Vul: R/R   ♠AKxxx
+Vul:  R/R  ♠AKxxx
            ♥Qxx
            ♦JTx
            ♣xx
@@ -535,7 +544,8 @@ Vul: R/R   ♠AKxxx
                       },
                   vul = Nothing,
                   lead = Nothing,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  seat = Nothing
                 }
 
       let expected =
@@ -593,12 +603,13 @@ Vul: R/R   ♠AKxxx
                       },
                   vul = Just RR,
                   lead = Just $ Card Diamonds Four,
-                  scoring = Nothing
+                  scoring = Nothing,
+                  seat = Nothing
                 }
 
       let expected =
             [r|
-Vul: R/R   ♠AKxxx
+Vul:  R/R  ♠AKxxx
            ♥Qxx
            ♦JTx
            ♣xx
@@ -651,12 +662,13 @@ Lead: ♦4    -----     ♠Qxx
                       },
                   vul = Just RR,
                   lead = Just $ Card Diamonds Four,
-                  scoring = Just Imps
+                  scoring = Just Imps,
+                  seat = Nothing
                 }
 
       let expected =
             [r|
-Vul: R/R   ♠AKxxx
+Vul:  R/R  ♠AKxxx
 IMPs       ♥Qxx
            ♦JTx
            ♣xx

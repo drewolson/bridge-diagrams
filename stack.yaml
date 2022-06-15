@@ -1,4 +1,4 @@
-resolver: lts-19.7
+resolver: lts-19.10
 
 packages:
 - bridge-diagrams-cli

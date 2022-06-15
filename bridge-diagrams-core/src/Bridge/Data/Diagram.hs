@@ -8,6 +8,7 @@ import Bridge.Data.Card (Card)
 import Bridge.Data.Layout (Layout (..))
 import Bridge.Data.Perspective (Perspective (..))
 import Bridge.Data.Scoring (Scoring)
+import Bridge.Data.Seat (Seat)
 import Bridge.Data.Unknown qualified as Unknown
 import Bridge.Data.Vul (Vul)
 import Control.Monad (unless, when)
@@ -16,7 +17,8 @@ data Diagram = Diagram
   { layout :: Layout,
     vul :: Maybe Vul,
     scoring :: Maybe Scoring,
-    lead :: Maybe Card
+    lead :: Maybe Card,
+    seat :: Maybe Seat
   }
   deriving (Eq, Show)
 
@@ -43,8 +45,8 @@ validateLead layout lead = do
   when (isUnknownLead lead) do
     Left "Opening lead cannot be an unknown spot card"
 
-new :: Layout -> Maybe Vul -> Maybe Scoring -> Maybe Card -> Either String Diagram
-new layout vul scoring lead = do
+new :: Layout -> Maybe Vul -> Maybe Scoring -> Maybe Card -> Maybe Seat -> Either String Diagram
+new layout vul scoring lead seat = do
   validateLead layout lead
 
-  pure $ Diagram {layout, vul, scoring, lead}
+  pure $ Diagram {layout, vul, scoring, lead, seat}

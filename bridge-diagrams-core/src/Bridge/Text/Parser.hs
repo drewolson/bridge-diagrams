@@ -13,6 +13,7 @@ import Bridge.Data.Layout qualified as Layout
 import Bridge.Data.Perspective (Perspective (..))
 import Bridge.Data.Rank (Rank (..))
 import Bridge.Data.Scoring (Scoring (..))
+import Bridge.Data.Seat (Seat (..))
 import Bridge.Data.Suit (Suit (..))
 import Bridge.Data.Vul (Vul (..))
 import Control.Applicative ((<|>))
@@ -119,18 +120,28 @@ parseScoring =
       Bam <$ string' "bam"
     ]
 
+parseSeat :: Parser Seat
+parseSeat =
+  choice
+    [ First <$ (string' "1st" <|> string' "1"),
+      Second <$ (string' "2nd" <|> string' "2"),
+      Third <$ (string' "3rd" <|> string' "3"),
+      Fourth <$ (string' "4th" <|> string' "4")
+    ]
+
 parseDiagram :: Parser Diagram
 parseDiagram = do
-  (layout, vul, scoring, lead) <-
+  (layout, vul, scoring, lead, seat) <-
     intercalateEffect (space *> char ',' <* space) $
-      (,,,) <$> toPermutation (try parseLayout)
+      (,,,,) <$> toPermutation (try parseLayout)
         <*> toPermutationWithDefault Nothing (Just <$> try parseVul)
         <*> toPermutationWithDefault Nothing (Just <$> try parseScoring)
         <*> toPermutationWithDefault Nothing (Just <$> try parseCard)
+        <*> toPermutationWithDefault Nothing (Just <$> try parseSeat)
 
   eof
 
-  rightOrFail $ Diagram.new layout vul scoring lead
+  rightOrFail $ Diagram.new layout vul scoring lead seat
 
 parse :: Text -> Either Text Diagram
 parse = first (pack . errorBundlePretty) . runParser parseDiagram "" . strip

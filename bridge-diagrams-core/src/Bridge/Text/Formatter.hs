@@ -12,6 +12,7 @@ import Bridge.Data.Layout (Layout (..))
 import Bridge.Data.Perspective (Perspective (..))
 import Bridge.Data.Rank (Rank)
 import Bridge.Data.Scoring (Scoring (..))
+import Bridge.Data.Seat (Seat (..))
 import Bridge.Data.Suit (Suit (..))
 import Bridge.Data.Vul (Vul (..))
 import Data.List (sort)
@@ -79,16 +80,20 @@ handBlock = block . vcat . handLines
        in literal (pack $ show suit) <> rankLine suitRanks
 
 vulLine :: Vul -> Doc Text
-vulLine vul = literal $ "Vul: " <> pack (show vul)
+vulLine vul = literal $ "Vul:  " <> pack (show vul)
 
 scoringLine :: Scoring -> Doc Text
 scoringLine = literal . pack . show
 
-infoBlock :: Maybe Vul -> Maybe Scoring -> Doc Text
-infoBlock vul scoring =
+seatLine :: Seat -> Doc Text
+seatLine seat = literal $ "Seat: " <> pack (show seat)
+
+infoBlock :: Maybe Vul -> Maybe Scoring -> Maybe Seat -> Doc Text
+infoBlock vul scoring seat =
   linesToBlock $
     catMaybes
-      [ vulLine <$> vul,
+      [ seatLine <$> seat,
+        vulLine <$> vul,
         scoringLine <$> scoring
       ]
 
@@ -109,42 +114,42 @@ comboBlock top bottom =
 
 diagramDocument :: Diagram -> Doc Text
 diagramDocument = \case
-  Diagram {layout = DoubleDummy {north, south, east, west}, vul, scoring, lead} ->
+  Diagram {layout = DoubleDummy {north, south, east, west}, vul, scoring, lead, seat} ->
     vcat
-      [ infoBlock vul scoring <> handBlock north,
+      [ infoBlock vul scoring seat <> handBlock north,
         handBlock west <> centerCompass <> handBlock east,
         leadBlock lead <> handBlock south
       ]
-  Diagram {layout = SingleDummy {north, south}, vul, scoring, lead = Nothing} ->
+  Diagram {layout = SingleDummy {north, south}, vul, scoring, lead = Nothing, seat} ->
     vsep
-      [ handBlock north <> infoBlock vul scoring,
+      [ handBlock north <> infoBlock vul scoring seat,
         handBlock south
       ]
-  Diagram {layout = SingleDummy {north, south}, vul, scoring, lead} ->
+  Diagram {layout = SingleDummy {north, south}, vul, scoring, lead, seat} ->
     vcat
-      [ infoBlock vul scoring <> handBlock north,
+      [ infoBlock vul scoring seat <> handBlock north,
         leadBlock lead,
         emptyBlock <> handBlock south
       ]
-  Diagram {layout = Defense {perspective = East, defender, dummy}, vul, scoring, lead = Nothing} ->
+  Diagram {layout = Defense {perspective = East, defender, dummy}, vul, scoring, lead = Nothing, seat} ->
     vcat
-      [ handBlock dummy <> infoBlock vul scoring,
+      [ handBlock dummy <> infoBlock vul scoring seat,
         lowerLeftCompass <> handBlock defender
       ]
-  Diagram {layout = Defense {perspective = East, defender, dummy}, vul, scoring, lead} ->
+  Diagram {layout = Defense {perspective = East, defender, dummy}, vul, scoring, lead, seat} ->
     vcat
-      [ infoBlock vul scoring <> handBlock dummy,
+      [ infoBlock vul scoring seat <> handBlock dummy,
         leadBlock lead <> lowerLeftCompass <> handBlock defender
       ]
-  Diagram {layout = Defense {perspective = West, defender, dummy}, vul, scoring} ->
+  Diagram {layout = Defense {perspective = West, defender, dummy}, vul, scoring, seat} ->
     vcat
-      [ infoBlock vul scoring <> handBlock dummy,
+      [ infoBlock vul scoring seat <> handBlock dummy,
         handBlock defender <> lowerRightCompass
       ]
-  Diagram {layout = SingleHand {hand}, vul, scoring} ->
-    handBlock hand <> infoBlock vul scoring
-  Diagram {layout = SuitCombination {top, bottom}, vul, scoring} ->
-    comboBlock top bottom <> infoBlock vul scoring
+  Diagram {layout = SingleHand {hand}, vul, scoring, seat} ->
+    handBlock hand <> infoBlock vul scoring seat
+  Diagram {layout = SuitCombination {top, bottom}, vul, scoring, seat} ->
+    comboBlock top bottom <> infoBlock vul scoring seat
 
 format :: Diagram -> Text
 format = render Nothing . chomp . diagramDocument

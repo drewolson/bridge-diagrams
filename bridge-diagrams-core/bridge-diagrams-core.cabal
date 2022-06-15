@@ -22,6 +22,7 @@ library
       Bridge.Data.Perspective
       Bridge.Data.Rank
       Bridge.Data.Scoring
+      Bridge.Data.Seat
       Bridge.Data.Suit
       Bridge.Data.Unknown
       Bridge.Data.Vul
