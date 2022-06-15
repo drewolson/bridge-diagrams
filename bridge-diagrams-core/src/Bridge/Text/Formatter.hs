@@ -88,8 +88,8 @@ scoringLine = literal . pack . show
 seatLine :: Seat -> Doc Text
 seatLine seat = literal $ "Seat: " <> pack (show seat)
 
-infoBlock :: Maybe Vul -> Maybe Scoring -> Maybe Seat -> Doc Text
-infoBlock vul scoring seat =
+infoBlock :: Diagram -> Doc Text
+infoBlock Diagram {vul, scoring, seat} =
   linesToBlock $
     catMaybes
       [ seatLine <$> seat,
@@ -114,42 +114,42 @@ comboBlock top bottom =
 
 diagramDocument :: Diagram -> Doc Text
 diagramDocument = \case
-  Diagram {layout = DoubleDummy {north, south, east, west}, vul, scoring, lead, seat} ->
+  d@Diagram {layout = DoubleDummy {north, south, east, west}, lead} ->
     vcat
-      [ infoBlock vul scoring seat <> handBlock north,
+      [ infoBlock d <> handBlock north,
         handBlock west <> centerCompass <> handBlock east,
         leadBlock lead <> handBlock south
       ]
-  Diagram {layout = SingleDummy {north, south}, vul, scoring, lead = Nothing, seat} ->
+  d@Diagram {layout = SingleDummy {north, south}, lead = Nothing} ->
     vsep
-      [ handBlock north <> infoBlock vul scoring seat,
+      [ handBlock north <> infoBlock d,
         handBlock south
       ]
-  Diagram {layout = SingleDummy {north, south}, vul, scoring, lead, seat} ->
+  d@Diagram {layout = SingleDummy {north, south}, lead} ->
     vcat
-      [ infoBlock vul scoring seat <> handBlock north,
+      [ infoBlock d <> handBlock north,
         leadBlock lead,
         emptyBlock <> handBlock south
       ]
-  Diagram {layout = Defense {perspective = East, defender, dummy}, vul, scoring, lead = Nothing, seat} ->
+  d@Diagram {layout = Defense {perspective = East, defender, dummy}, lead = Nothing} ->
     vcat
-      [ handBlock dummy <> infoBlock vul scoring seat,
+      [ handBlock dummy <> infoBlock d,
         lowerLeftCompass <> handBlock defender
       ]
-  Diagram {layout = Defense {perspective = East, defender, dummy}, vul, scoring, lead, seat} ->
+  d@Diagram {layout = Defense {perspective = East, defender, dummy}, lead} ->
     vcat
-      [ infoBlock vul scoring seat <> handBlock dummy,
+      [ infoBlock d <> handBlock dummy,
         leadBlock lead <> lowerLeftCompass <> handBlock defender
       ]
-  Diagram {layout = Defense {perspective = West, defender, dummy}, vul, scoring, seat} ->
+  d@Diagram {layout = Defense {perspective = West, defender, dummy}} ->
     vcat
-      [ infoBlock vul scoring seat <> handBlock dummy,
+      [ infoBlock d <> handBlock dummy,
         handBlock defender <> lowerRightCompass
       ]
-  Diagram {layout = SingleHand {hand}, vul, scoring, seat} ->
-    handBlock hand <> infoBlock vul scoring seat
-  Diagram {layout = SuitCombination {top, bottom}, vul, scoring, seat} ->
-    comboBlock top bottom <> infoBlock vul scoring seat
+  d@Diagram {layout = SingleHand {hand}} ->
+    handBlock hand <> infoBlock d
+  d@Diagram {layout = SuitCombination {top, bottom}} ->
+    comboBlock top bottom <> infoBlock d
 
 format :: Diagram -> Text
 format = render Nothing . chomp . diagramDocument
