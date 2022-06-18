@@ -20,12 +20,12 @@ akxxx qtx jxx xx
 akqxxxxx - - kjxxx
 AKQxxxxx Void void KJxxx
 
-You can also optionally provide a vulnerability, opening lead, and scoring
-separated by commas.
+You can also optionally provide a seat, vulnerability, opening lead, and
+scoring separated by commas.
 
 Examples:
 
-akxxx qxx jtx xx; jx jx akxxx qxxx, r/r, d4, imps
+1st; akxxx qxx jtx xx; jx jx akxxx qxxx, r/r, d4, imps
 
 
 Several types of layouts are supported.
