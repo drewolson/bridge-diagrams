@@ -40,7 +40,7 @@ instance
   parseJSON = fmap PrefixedSnakeCaseJson . genericParseJSON (snakeCaseOptions $ typeNameSize @a)
 
 typeNameSize :: forall a. Typeable a => Int
-typeNameSize = length $ show $ typeOf @a undefined
+typeNameSize = length $ show $ (typeOf @a) undefined
 
 snakeCaseOptions :: Int -> Options
 snakeCaseOptions prefixSize =
