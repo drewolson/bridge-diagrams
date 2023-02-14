@@ -32,27 +32,12 @@ library
   default-extensions:
       AllowAmbiguousTypes
       BlockArguments
-      DataKinds
-      DeriveAnyClass
-      DeriveGeneric
       DerivingStrategies
       DerivingVia
-      FlexibleContexts
-      FlexibleInstances
-      GeneralizedNewtypeDeriving
-      ImportQualifiedPost
-      InstanceSigs
       LambdaCase
-      MultiParamTypeClasses
-      NamedFieldPuns
-      NoMonomorphismRestriction
       OverloadedStrings
       PatternSynonyms
       QuasiQuotes
-      ScopedTypeVariables
-      TypeApplications
-      TypeFamilies
-      TypeOperators
       UndecidableInstances
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
@@ -70,7 +55,7 @@ library
     , transformers
     , websockets
     , wuss
-  default-language: Haskell2010
+  default-language: GHC2021
 
 executable bridge-slack-exe
   main-is: Main.hs
@@ -79,27 +64,12 @@ executable bridge-slack-exe
   default-extensions:
       AllowAmbiguousTypes
       BlockArguments
-      DataKinds
-      DeriveAnyClass
-      DeriveGeneric
       DerivingStrategies
       DerivingVia
-      FlexibleContexts
-      FlexibleInstances
-      GeneralizedNewtypeDeriving
-      ImportQualifiedPost
-      InstanceSigs
       LambdaCase
-      MultiParamTypeClasses
-      NamedFieldPuns
-      NoMonomorphismRestriction
       OverloadedStrings
       PatternSynonyms
       QuasiQuotes
-      ScopedTypeVariables
-      TypeApplications
-      TypeFamilies
-      TypeOperators
       UndecidableInstances
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
@@ -118,4 +88,4 @@ executable bridge-slack-exe
     , transformers
     , websockets
     , wuss
-  default-language: Haskell2010
+  default-language: GHC2021

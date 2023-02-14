@@ -16,6 +16,7 @@ import Data.Aeson
     genericToJSON,
   )
 import Data.Data (Typeable, typeOf)
+import Data.Kind (Type)
 import GHC.Generics (Generic (..))
 import Text.Casing (quietSnake)
 
@@ -39,7 +40,7 @@ instance
   where
   parseJSON = fmap PrefixedSnakeCaseJson . genericParseJSON (snakeCaseOptions $ typeNameSize @a)
 
-typeNameSize :: forall a. Typeable a => Int
+typeNameSize :: forall a. Typeable (a :: Type) => Int
 typeNameSize = length $ show $ (typeOf @a) undefined
 
 snakeCaseOptions :: Int -> Options
