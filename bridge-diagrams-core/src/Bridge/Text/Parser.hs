@@ -133,7 +133,8 @@ parseDiagram :: Parser Diagram
 parseDiagram = do
   (layout, vul, scoring, lead, seat) <-
     intercalateEffect (space *> char ',' <* space) $
-      (,,,,) <$> toPermutation (try parseLayout)
+      (,,,,)
+        <$> toPermutation (try parseLayout)
         <*> toPermutationWithDefault Nothing (Just <$> try parseVul)
         <*> toPermutationWithDefault Nothing (Just <$> try parseScoring)
         <*> toPermutationWithDefault Nothing (Just <$> try parseCard)

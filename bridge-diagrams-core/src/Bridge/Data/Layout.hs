@@ -34,9 +34,9 @@ buildFourthHand cards = foldMap (missingSuitCards . ofSuit) Suit.enumerate
     missingSuitCards (suit, existing)
       | Unknown.areAllKnown existing = Card.enumerateSuit suit \\ existing
       | otherwise =
-        let honors = Card.suitHonors suit \\ filter Card.isHonor existing
-            hand = honors ++ repeat (Card suit Unknown)
-         in take (13 - length existing) hand
+          let honors = Card.suitHonors suit \\ filter Card.isHonor existing
+              hand = honors ++ repeat (Card suit Unknown)
+           in take (13 - length existing) hand
 
 fromThreeHands :: Hand -> Hand -> Hand -> Either String Layout
 fromThreeHands north east south = do
