@@ -1,0 +1,109 @@
+name:                bridge-diagrams
+version:             0.1.0.0
+license:             MIT
+author:              "Drew Olson"
+maintainer:          "drew@drewolson.org"
+copyright:           "2021-present Drew Olson"
+
+description:         Bridge Hand Diagrams
+
+ghc-options:
+- -O0
+- -Werror
+- -Wall
+- -Wcompat
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wredundant-constraints
+
+language: GHC2021
+
+default-extensions:
+- AllowAmbiguousTypes
+- BlockArguments
+- DerivingStrategies
+- DerivingVia
+- LambdaCase
+- OverloadedStrings
+- PatternSynonyms
+- QuasiQuotes
+- UndecidableInstances
+- ViewPatterns
+
+build-tools:
+- ormolu
+
+dependencies:
+- base >= 4.7 && < 5
+- either
+- discord-haskell
+- casing
+- aeson
+- doclayout
+- megaparsec
+- parser-combinators
+- raw-strings-qq
+- text
+- wuss
+- network
+- http-conduit
+- bytestring
+- transformers
+- websockets
+
+library:
+  source-dirs: src
+
+tests:
+  bridge-diagrams-core-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - bridge-diagrams
+    - QuickCheck
+    - hspec
+    - hspec-discover
+
+executables:
+  bridge-cli-exe:
+    main:                Main.hs
+    source-dirs:         app/Cli
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - bridge-diagrams
+    when:
+    - condition: false
+      other-modules: Paths_bridge_diagrams
+
+  bridge-discord-exe:
+    main:                Main.hs
+    source-dirs:         app/Discord
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - bridge-diagrams
+    when:
+    - condition: false
+      other-modules: Paths_bridge_diagrams
+
+  bridge-slack-exe:
+    main:                Main.hs
+    source-dirs:         app/Slack
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - bridge-diagrams
+    when:
+    - condition: false
+      other-modules: Paths_bridge_diagrams

@@ -1,0 +1,245 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.35.1.
+--
+-- see: https://github.com/sol/hpack
+
+name:           bridge-diagrams
+version:        0.1.0.0
+description:    Bridge Hand Diagrams
+author:         Drew Olson
+maintainer:     drew@drewolson.org
+copyright:      2021-present Drew Olson
+license:        MIT
+license-file:   LICENSE
+build-type:     Simple
+
+library
+  exposed-modules:
+      Bridge.Cli.Main
+      Bridge.Data.Card
+      Bridge.Data.Diagram
+      Bridge.Data.Hand
+      Bridge.Data.Layout
+      Bridge.Data.Perspective
+      Bridge.Data.Rank
+      Bridge.Data.Scoring
+      Bridge.Data.Seat
+      Bridge.Data.Suit
+      Bridge.Data.Unknown
+      Bridge.Data.Vul
+      Bridge.Discord.Formatter
+      Bridge.Discord.Main
+      Bridge.IO.Buffering
+      Bridge.Slack.Data.Ack
+      Bridge.Slack.Data.AckPayload
+      Bridge.Slack.Data.ConnectionData
+      Bridge.Slack.Data.Event
+      Bridge.Slack.Data.EventPayload
+      Bridge.Slack.Data.Message
+      Bridge.Slack.Data.PostMessage
+      Bridge.Slack.Data.SlashCommand
+      Bridge.Slack.Json
+      Bridge.Slack.Main
+      Bridge.Text.Formatter
+      Bridge.Text.Help
+      Bridge.Text.Parser
+  other-modules:
+      Paths_bridge_diagrams
+  hs-source-dirs:
+      src
+  default-extensions:
+      AllowAmbiguousTypes
+      BlockArguments
+      DerivingStrategies
+      DerivingVia
+      LambdaCase
+      OverloadedStrings
+      PatternSynonyms
+      QuasiQuotes
+      UndecidableInstances
+      ViewPatterns
+  ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
+  build-tool-depends:
+      ormolu:ormolu
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , casing
+    , discord-haskell
+    , doclayout
+    , either
+    , http-conduit
+    , megaparsec
+    , network
+    , parser-combinators
+    , raw-strings-qq
+    , text
+    , transformers
+    , websockets
+    , wuss
+  default-language: GHC2021
+
+executable bridge-cli-exe
+  main-is: Main.hs
+  hs-source-dirs:
+      app/Cli
+  default-extensions:
+      AllowAmbiguousTypes
+      BlockArguments
+      DerivingStrategies
+      DerivingVia
+      LambdaCase
+      OverloadedStrings
+      PatternSynonyms
+      QuasiQuotes
+      UndecidableInstances
+      ViewPatterns
+  ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-tool-depends:
+      ormolu:ormolu
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bridge-diagrams
+    , bytestring
+    , casing
+    , discord-haskell
+    , doclayout
+    , either
+    , http-conduit
+    , megaparsec
+    , network
+    , parser-combinators
+    , raw-strings-qq
+    , text
+    , transformers
+    , websockets
+    , wuss
+  default-language: GHC2021
+
+executable bridge-discord-exe
+  main-is: Main.hs
+  hs-source-dirs:
+      app/Discord
+  default-extensions:
+      AllowAmbiguousTypes
+      BlockArguments
+      DerivingStrategies
+      DerivingVia
+      LambdaCase
+      OverloadedStrings
+      PatternSynonyms
+      QuasiQuotes
+      UndecidableInstances
+      ViewPatterns
+  ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-tool-depends:
+      ormolu:ormolu
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bridge-diagrams
+    , bytestring
+    , casing
+    , discord-haskell
+    , doclayout
+    , either
+    , http-conduit
+    , megaparsec
+    , network
+    , parser-combinators
+    , raw-strings-qq
+    , text
+    , transformers
+    , websockets
+    , wuss
+  default-language: GHC2021
+
+executable bridge-slack-exe
+  main-is: Main.hs
+  hs-source-dirs:
+      app/Slack
+  default-extensions:
+      AllowAmbiguousTypes
+      BlockArguments
+      DerivingStrategies
+      DerivingVia
+      LambdaCase
+      OverloadedStrings
+      PatternSynonyms
+      QuasiQuotes
+      UndecidableInstances
+      ViewPatterns
+  ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-tool-depends:
+      ormolu:ormolu
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bridge-diagrams
+    , bytestring
+    , casing
+    , discord-haskell
+    , doclayout
+    , either
+    , http-conduit
+    , megaparsec
+    , network
+    , parser-combinators
+    , raw-strings-qq
+    , text
+    , transformers
+    , websockets
+    , wuss
+  default-language: GHC2021
+
+test-suite bridge-diagrams-core-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Bridge.Data.CardSpec
+      Bridge.Data.LayoutSpec
+      Bridge.Data.UnknownSpec
+      Bridge.Text.FormatterSpec
+      Bridge.Text.ParserSpec
+      Paths_bridge_diagrams
+  hs-source-dirs:
+      test
+  default-extensions:
+      AllowAmbiguousTypes
+      BlockArguments
+      DerivingStrategies
+      DerivingVia
+      LambdaCase
+      OverloadedStrings
+      PatternSynonyms
+      QuasiQuotes
+      UndecidableInstances
+      ViewPatterns
+  ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-tool-depends:
+      ormolu:ormolu
+  build-depends:
+      QuickCheck
+    , aeson
+    , base >=4.7 && <5
+    , bridge-diagrams
+    , bytestring
+    , casing
+    , discord-haskell
+    , doclayout
+    , either
+    , hspec
+    , hspec-discover
+    , http-conduit
+    , megaparsec
+    , network
+    , parser-combinators
+    , raw-strings-qq
+    , text
+    , transformers
+    , websockets
+    , wuss
+  default-language: GHC2021
