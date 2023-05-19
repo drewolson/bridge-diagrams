@@ -1,8 +1,8 @@
-resolver: lts-20.11
+resolver: lts-20.21
 
 packages:
 - .
 
 extra-deps:
-- discord-haskell-1.15.3
+- discord-haskell-1.15.4
 - emoji-0.1.0.2
