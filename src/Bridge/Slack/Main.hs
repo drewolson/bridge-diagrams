@@ -28,7 +28,7 @@ import Network.WebSockets qualified as WS
 import System.Environment (getEnv)
 import Wuss qualified
 
-slackRequest :: MonadIO m => String -> String -> RequestHeaders -> m Request
+slackRequest :: (MonadIO m) => String -> String -> RequestHeaders -> m Request
 slackRequest token url headers = do
   initReq <- liftIO $ parseRequest url
 
@@ -38,7 +38,7 @@ slackRequest token url headers = do
         requestHeaders = [("Authorization", "Bearer " <> BS.pack token)] <> headers
       }
 
-getConnectionData :: MonadIO m => String -> m ConnectionData
+getConnectionData :: (MonadIO m) => String -> m ConnectionData
 getConnectionData token = do
   req <-
     slackRequest
@@ -48,14 +48,14 @@ getConnectionData token = do
 
   getResponseBody <$> httpJSON req
 
-fetchConnectionInfo :: MonadIO m => String -> m (String, PortNumber, String)
+fetchConnectionInfo :: (MonadIO m) => String -> m (String, PortNumber, String)
 fetchConnectionInfo token = do
   ConnectionData {connectionDataUrl} <- getConnectionData token
   let url = fromMaybe connectionDataUrl (T.stripPrefix "wss://" connectionDataUrl)
   let (host, path) = T.breakOn "/" url
   pure (T.unpack host, 443, T.unpack path)
 
-postMessage :: MonadIO m => String -> PostMessage -> m ()
+postMessage :: (MonadIO m) => String -> PostMessage -> m ()
 postMessage token message = do
   initReq <-
     slackRequest
@@ -65,23 +65,23 @@ postMessage token message = do
 
   void $ httpLBS $ initReq {requestBody = RequestBodyLBS $ encode message}
 
-ack :: MonadIO m => WS.Connection -> Event -> m ()
+ack :: (MonadIO m) => WS.Connection -> Event -> m ()
 ack conn = liftIO . WS.sendTextData conn . encode . ackFromEvent
 
 sendJson :: (ToJSON a, MonadIO m) => WS.Connection -> a -> m ()
 sendJson conn = liftIO . WS.sendTextData conn . encode
 
-sendClose :: MonadIO m => WS.Connection -> m ()
+sendClose :: (MonadIO m) => WS.Connection -> m ()
 sendClose conn = liftIO $ WS.sendClose conn ("close" :: Text)
 
 receive :: (WS.WebSocketsData a, MonadIO m) => WS.Connection -> m a
 receive = liftIO . WS.receiveData
 
-handleHelpCommand :: MonadIO m => WS.Connection -> Event -> m ()
+handleHelpCommand :: (MonadIO m) => WS.Connection -> Event -> m ()
 handleHelpCommand conn event =
   sendJson conn $ errorAck event $ Formatter.codeBlock Help.helpText
 
-handleBridgeCommand :: MonadIO m => String -> WS.Connection -> Event -> SlashCommand -> m ()
+handleBridgeCommand :: (MonadIO m) => String -> WS.Connection -> Event -> SlashCommand -> m ()
 handleBridgeCommand token conn event slashCommand@SlashCommand {slashCommandText} = do
   case Parser.parse $ T.strip slashCommandText of
     Left err -> do
@@ -92,10 +92,10 @@ handleBridgeCommand token conn event slashCommand@SlashCommand {slashCommandText
       let responseText = Formatter.codeBlock $ Formatter.format diagram
       postMessage token $ postMessageFromSlashCommand responseText slashCommand
 
-loop :: Monad m => MaybeT m a -> m ()
+loop :: (Monad m) => MaybeT m a -> m ()
 loop = void . runMaybeT . forever
 
-quit :: MonadPlus m => m ()
+quit :: (MonadPlus m) => m ()
 quit = mzero
 
 handler :: String -> WS.ClientApp ()

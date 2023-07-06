@@ -13,10 +13,10 @@ import Data.List (intercalate, nub, (\\))
 class Unknown a where
   isUnknown :: a -> Bool
 
-areAllKnown :: Unknown a => [a] -> Bool
+areAllKnown :: (Unknown a) => [a] -> Bool
 areAllKnown = not . any isUnknown
 
-knowns :: Unknown a => [a] -> [a]
+knowns :: (Unknown a) => [a] -> [a]
 knowns = filter (not . isUnknown)
 
 hasUniqueEntries :: (Eq a, Unknown a) => [a] -> Bool

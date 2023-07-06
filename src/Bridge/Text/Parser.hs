@@ -26,7 +26,7 @@ import Text.Megaparsec.Char (char, space, space1, string, string')
 
 type Parser = Parsec Void Text
 
-rightOrFail :: MonadFail m => Either String a -> m a
+rightOrFail :: (MonadFail m) => Either String a -> m a
 rightOrFail = either fail pure
 
 parseRank :: Parser Rank
