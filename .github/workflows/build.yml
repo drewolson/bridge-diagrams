@@ -11,26 +11,34 @@ jobs:
   build:
     name: Build, Test & Upload
     runs-on: ubuntu-latest
+    container:
+      image: haskell:9.4-buster
+      options: --user root
     steps:
       - uses: actions/checkout@v2
-      - id: stack
-        uses: freckle/stack-action@v4
+      - uses: actions/cache@v3
         with:
-          test: false
+          path: |
+            ~/.stack
+            .stack-work
+            */.stack-work
+          key: ${{ runner.os }}
+      - name: Permissions bug workaround
+        run: "chown -R $(id -un):$(id -gn) ~"
+      - name: Build
+        run: make build
       - name: Check Formatting
         run: make format-check
       - name: Test
         run: make test
-      - name: Build
-        run: make build
       - name: Make Artifacts Directory
         run: mkdir artifacts
       - name: Copy CLI Artifact
-        run: cp ${{ steps.stack.outputs.local-bin-path }}/bridge-cli-exe ./artifacts
+        run: cp $(stack exec which bridge-cli-exe) ./artifacts
       - name: Copy Slack Artifact
-        run: cp ${{ steps.stack.outputs.local-bin-path }}/bridge-slack-exe ./artifacts
+        run: cp $(stack exec which bridge-slack-exe) ./artifacts
       - name: Copy Discord Artifact
-        run: cp ${{ steps.stack.outputs.local-bin-path }}/bridge-discord-exe ./artifacts
+        run: cp $(stack exec which bridge-discord-exe) ./artifacts
       - name: Tar Artifacts
         run: tar -cvf artifacts.tar ./artifacts
       - uses: actions/upload-artifact@v2
