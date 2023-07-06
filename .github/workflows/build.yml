@@ -12,7 +12,7 @@ jobs:
     name: Build, Test & Upload
     runs-on: ubuntu-latest
     container:
-      image: haskell:9.2-buster
+      image: haskell:9.4-buster
       options: --user root
     steps:
       - uses: actions/checkout@v2
