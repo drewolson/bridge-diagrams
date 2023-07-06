@@ -20,7 +20,7 @@ jobs:
       - name: Check Formatting
         run: make format-check
       - name: Test
-r       run: make test
+        run: make test
       - name: Build
         run: make build
       - name: Make Artifacts Directory
