@@ -20,17 +20,17 @@ jobs:
       - name: Check Formatting
         run: make format-check
       - name: Test
-        run: make test
+r       run: make test
       - name: Build
         run: make build
       - name: Make Artifacts Directory
         run: mkdir artifacts
       - name: Copy CLI Artifact
-        run: cp ${{ steps.stack.outputs.local-bin-path }}/bridge-cli-exe ./artifacts
+        run: cp $(stack exec which bridge-cli-exe) ./artifacts
       - name: Copy Slack Artifact
-        run: cp ${{ steps.stack.outputs.local-bin-path }}/bridge-slack-exe ./artifacts
+        run: cp $(stack exec which bridge-slack-exe) ./artifacts
       - name: Copy Discord Artifact
-        run: cp ${{ steps.stack.outputs.local-bin-path }}/bridge-discord-exe ./artifacts
+        run: cp $(stack exec which bridge-discord-exe) ./artifacts
       - name: Tar Artifacts
         run: tar -cvf artifacts.tar ./artifacts
       - uses: actions/upload-artifact@v2
