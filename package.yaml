@@ -30,9 +30,6 @@ default-extensions:
 - UndecidableInstances
 - ViewPatterns
 
-build-tools:
-- ormolu
-
 dependencies:
 - base >= 4.7 && < 5
 - either

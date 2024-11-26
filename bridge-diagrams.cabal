@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.35.1.
+-- This file has been generated from package.yaml by hpack version 0.37.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -60,8 +60,6 @@ library
       UndecidableInstances
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
-  build-tool-depends:
-      ormolu:ormolu
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -97,8 +95,6 @@ executable bridge-cli-exe
       UndecidableInstances
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
-  build-tool-depends:
-      ormolu:ormolu
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -135,8 +131,6 @@ executable bridge-discord-exe
       UndecidableInstances
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
-  build-tool-depends:
-      ormolu:ormolu
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -173,8 +167,6 @@ executable bridge-slack-exe
       UndecidableInstances
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
-  build-tool-depends:
-      ormolu:ormolu
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -219,8 +211,6 @@ test-suite bridge-diagrams-core-test
       UndecidableInstances
       ViewPatterns
   ghc-options: -O0 -Werror -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
-  build-tool-depends:
-      ormolu:ormolu
   build-depends:
       QuickCheck
     , aeson
