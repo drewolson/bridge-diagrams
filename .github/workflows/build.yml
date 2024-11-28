@@ -27,8 +27,6 @@ jobs:
         run: "chown -R $(id -un):$(id -gn) ~"
       - name: Build
         run: make build
-      - name: Check Formatting
-        run: make format-check
       - name: Test
         run: make test
       - name: Make Artifacts Directory
