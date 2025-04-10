@@ -4,5 +4,4 @@ packages:
 - .
 
 extra-deps:
-- discord-haskell-1.16.0
-- emoji-0.1.0.2
+- discord-haskell-1.17.1
