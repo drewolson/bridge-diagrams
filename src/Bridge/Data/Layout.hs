@@ -1,7 +1,6 @@
 module Bridge.Data.Layout
   ( Layout (..),
     fromHands,
-    suitCombination,
   )
 where
 
@@ -13,7 +12,7 @@ import Bridge.Data.Rank (Rank (..))
 import Bridge.Data.Suit (Suit)
 import Bridge.Data.Suit qualified as Suit
 import Bridge.Data.Unknown qualified as Unknown
-import Control.Monad (join, unless, when)
+import Control.Monad (join, unless)
 import Data.List ((\\))
 
 data Layout
@@ -21,7 +20,6 @@ data Layout
   | SingleDummy {north :: Hand, south :: Hand}
   | DoubleDummy {north :: Hand, east :: Hand, south :: Hand, west :: Hand}
   | Defense {perspective :: Perspective, defender :: Hand, dummy :: Hand}
-  | SuitCombination {top :: [Rank], bottom :: [Rank]}
   deriving (Eq, Show)
 
 buildFourthHand :: [Card] -> Hand
@@ -60,13 +58,3 @@ fromHands hands = do
     [north, south] -> pure $ SingleDummy {north, south}
     [hand] -> pure $ SingleHand hand
     _ -> Left "Deal must be 1, 2, 3, or 4 hands"
-
-suitCombination :: [Rank] -> [Rank] -> Either String Layout
-suitCombination top bottom = do
-  unless (Unknown.hasUniqueEntries $ join [top, bottom]) do
-    Left $ "Suit combination has duplicate ranks: " <> Unknown.showDuplicates (join [top, bottom])
-
-  when (length (join [top, bottom]) > 13) do
-    Left "Suit combination cannot contain more than 13 cards"
-
-  pure $ SuitCombination {top, bottom}

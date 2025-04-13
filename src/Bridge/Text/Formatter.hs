@@ -18,7 +18,6 @@ import Bridge.Data.Vul (Vul (..))
 import Data.List (sort)
 import Data.Maybe (catMaybes)
 import Data.Text (Text, pack)
-import Data.Text qualified as Text
 import Text.DocLayout (Doc, chomp, empty, lblock, literal, render, vcat, vsep)
 
 block :: Doc Text -> Doc Text
@@ -102,16 +101,6 @@ leadBlock = \case
   Just card -> block $ literal $ "Lead: " <> pack (show card)
   Nothing -> emptyBlock
 
-comboBlock :: [Rank] -> [Rank] -> Doc Text
-comboBlock top bottom =
-  let width = maximum $ fmap length [top, bottom]
-   in block $
-        vcat
-          [ rankLine top,
-            literal $ Text.replicate width "-",
-            rankLine bottom
-          ]
-
 diagramDocument :: Diagram -> Doc Text
 diagramDocument = \case
   d@Diagram {layout = DoubleDummy {north, south, east, west}, lead} ->
@@ -148,8 +137,6 @@ diagramDocument = \case
       ]
   d@Diagram {layout = SingleHand {hand}} ->
     handBlock hand <> infoBlock d
-  d@Diagram {layout = SuitCombination {top, bottom}} ->
-    comboBlock top bottom <> infoBlock d
 
 format :: Diagram -> Text
 format = render Nothing . chomp . diagramDocument

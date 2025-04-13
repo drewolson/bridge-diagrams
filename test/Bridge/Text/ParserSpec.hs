@@ -21,23 +21,6 @@ import Test.Hspec (Spec, describe, it, parallel, shouldBe, shouldSatisfy)
 spec :: Spec
 spec = parallel do
   describe "parse" do
-    it "parses a suit combination" do
-      let result = Parser.parse "akxxx | qtx"
-      let expected =
-            Diagram
-              { layout =
-                  SuitCombination
-                    { top = [Ace, King, Unknown, Unknown, Unknown],
-                      bottom = [Queen, Ten, Unknown]
-                    },
-                vul = Nothing,
-                lead = Nothing,
-                scoring = Nothing,
-                seat = Nothing
-              }
-
-      result `shouldBe` Right expected
-
     it "parses a single hand" do
       let result = Parser.parse "akxxx kqx txx xx"
       let expected =

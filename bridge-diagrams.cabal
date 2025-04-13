@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.37.0.
+-- This file has been generated from package.yaml by hpack version 0.38.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -192,8 +192,8 @@ test-suite bridge-diagrams-core-test
   main-is: Spec.hs
   other-modules:
       Bridge.Data.CardSpec
-      Bridge.Data.LayoutSpec
       Bridge.Data.UnknownSpec
+      Bridge.ParseAndFormatSpec
       Bridge.Text.FormatterSpec
       Bridge.Text.ParserSpec
       Paths_bridge_diagrams

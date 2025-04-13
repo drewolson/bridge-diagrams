@@ -123,13 +123,4 @@ akxxx qxx jtx xx > qxx akxxx xxx kx
 |    E|    ♦xxx
 |     |    ♣Kx
  -----
-
-Suit combinations are provided as two sets of ranks divided by
-a | character.
-
-akxxx | jxx
-
-AKxxx
------
-Jxx
 |]
